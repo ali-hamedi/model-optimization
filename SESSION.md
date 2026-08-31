@@ -42,11 +42,23 @@ src/styles/              base.css, map.css, note.css
 - [x] Phase 2 data model, map, lens filter, relation types, hover card, selection
 - [x] Phase 3 markdown pipeline (LaTeX, wiki-links, images, D/Q/A/C/H/O/PRE/POST), paper view
 - [x] Phase 4 trench / synthesis / history views
-- [ ] Phase 5 polish (in progress)
-- [ ] Phase 6 deploy + verify production URL
+- [x] Phase 5 polish (layout fit, lens corners, docked selection card, mobile,
+      accessibility, obsidian tab/list normalisation)
+- [x] Phase 6 deployed and verified live at
+      https://ali-hamedi.github.io/model-optimization (deep link /papers/lth
+      returns the app via 404.html; assets and note images 200)
+
+## Verified in production
+- `/` renders the map, `/papers/lth` deep-links and survives a refresh
+  (GitHub serves 404.html with a 404 *status* — that is expected and correct).
+- Google fonts, hashed JS/CSS and `public/notes/*.png` all load under
+  `/model-optimization/`.
 
 ## Notes / gotchas
-- `.gitignore` used to contain `*.md`, which would have swallowed all note content. Removed.
+- `.gitignore` used to contain `*.md` (swallows every note) and an unanchored
+  `lib/` (swallows `src/lib/`). Both fixed; the Python patterns are now anchored
+  to the repo root. Check `git check-ignore -v <path>` if a file ever vanishes.
+- The vault is edited live; re-run `npm run sync` before committing note changes.
 - Two notes have unbalanced `$`/`$$` in the vault (authoring typos). The renderer now
   refuses to treat a `$$…$$` span containing a blank line or heading as math, so a
   stray delimiter can no longer swallow the page. Lines to fix in the vault:

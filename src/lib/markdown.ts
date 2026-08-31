@@ -161,6 +161,23 @@ function protect(text: string, vault: Vault): string {
   // raw HTML tags the notes use for colour / centring — keep them verbatim
   out = out.replace(/<\/?[a-zA-Z][^>\n]*>/g, (tag) => vault.stash(tag));
 
+  // Obsidian indents with tabs and shows them as nesting, but a tab counts as
+  // four spaces in markdown, which turns indented prose into a code block.
+  // Two spaces keeps the nesting and keeps the prose prose.
+  out = out.replace(/^\t+/gm, (tabs) => '  '.repeat(tabs.length));
+
+  // Obsidian also starts a list straight under a paragraph, with no blank
+  // line. CommonMark would fold it into the paragraph.
+  const lines = out.split('\n');
+  const isList = (l: string) => /^[\t ]*([-*+]|\d+[.)])[\t ]+\S/.test(l);
+  for (let i = lines.length - 1; i > 0; i--) {
+    const prev = lines[i - 1];
+    if (isList(lines[i]) && prev.trim() && !isList(prev) && !/^\s*[>#|]/.test(prev)) {
+      lines.splice(i, 0, '');
+    }
+  }
+  out = lines.join('\n');
+
   return out;
 }
 
