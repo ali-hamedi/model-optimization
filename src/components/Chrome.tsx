@@ -116,7 +116,7 @@ export default function Chrome({ children }: { children: ReactNode }) {
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           title={
             choice
-              ? `${theme === 'dark' ? 'Dark' : 'Light'} — shift-click to follow the system again`
+              ? `${theme === 'dark' ? 'Dark' : 'Light'}. Shift-click to follow the system again.`
               : `Following the system (${theme})`
           }
         >
