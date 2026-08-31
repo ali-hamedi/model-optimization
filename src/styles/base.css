@@ -1,0 +1,296 @@
+/* =====================================================================
+   Compression as a probe of computation — design system.
+   Two families: Source Serif 4 (reading), IBM Plex Mono (apparatus).
+   One ground: paper. Colour is semantic only — it always means a lens.
+   ===================================================================== */
+
+:root {
+  --paper: #f7f5f0;
+  --paper-2: #f0ede5;
+  --paper-3: #e7e3d9;
+  --ink: #16150f;
+  --ink-2: #46433b;
+  --ink-3: #7d786c;
+  --rule: rgba(22, 21, 15, 0.16);
+  --rule-soft: rgba(22, 21, 15, 0.08);
+  --shadow: 0 1px 2px rgba(22, 21, 15, 0.06), 0 12px 28px -18px rgba(22, 21, 15, 0.5);
+
+  --lens-geometry: #23636c;
+  --lens-structure: #8a5314;
+  --lens-representation: #6b3a60;
+  --lens-emergence: #3a5486;
+
+  --serif: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --measure: 66ch;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --paper: #131414;
+  --paper-2: #1a1b1b;
+  --paper-3: #232424;
+  --ink: #e9e5da;
+  --ink-2: #b3aea1;
+  --ink-3: #837e72;
+  --rule: rgba(233, 229, 218, 0.18);
+  --rule-soft: rgba(233, 229, 218, 0.08);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 16px 34px -20px rgba(0, 0, 0, 0.9);
+
+  --lens-geometry: #6fb3ba;
+  --lens-structure: #d09a4e;
+  --lens-representation: #bb8ab2;
+  --lens-emergence: #8ba6d9;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* A barely-there grid: the ground of a plotted figure, not a dashboard. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(to right, var(--rule-soft) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--rule-soft) 1px, transparent 1px);
+  background-size: 96px 96px;
+  mask-image: radial-gradient(120% 100% at 50% 0%, #000 20%, transparent 85%);
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.18em;
+}
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--lens-structure) 24%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--lens-geometry);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.mono,
+.eyebrow,
+.meta {
+  font-family: var(--mono);
+  font-variant-ligatures: none;
+}
+
+.eyebrow {
+  font-size: 0.64rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: 0.5rem 0.8rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+
+/* ---- shell ---------------------------------------------------------- */
+
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: baseline;
+  gap: 1.4rem;
+  padding: 0.85rem clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.topbar__mark {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.topbar__mark span {
+  color: var(--ink-3);
+}
+
+.topbar__nav {
+  display: flex;
+  gap: 1.1rem;
+  margin-left: auto;
+  align-items: baseline;
+}
+
+.navlink {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  color: var(--ink-3);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: color 180ms var(--ease), border-color 180ms var(--ease);
+}
+.navlink:hover {
+  color: var(--ink);
+}
+.navlink[aria-current='page'] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: color 180ms var(--ease), border-color 180ms var(--ease);
+}
+.theme-toggle:hover {
+  color: var(--ink);
+  border-color: var(--ink-3);
+}
+
+.page {
+  flex: 1;
+  width: 100%;
+}
+
+.sitefoot {
+  border-top: 1px solid var(--rule);
+  padding: 1.4rem clamp(1rem, 4vw, 3rem) 2.4rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--ink-3);
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+/* ---- shared page furniture ------------------------------------------ */
+
+.wrap {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 3rem) 5rem;
+}
+
+.page-title {
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin: 0.4rem 0 0;
+}
+
+.lead {
+  max-width: var(--measure);
+  color: var(--ink-2);
+  font-size: 1.05rem;
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2.4rem 0;
+}
+
+.lens-dot {
+  display: inline-block;
+  background: var(--lens-color, currentColor);
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  margin-right: 0.45em;
+  vertical-align: 0.06em;
+}
+
+.lens--geometry { --lens-color: var(--lens-geometry); color: var(--lens-geometry); }
+.lens--structure { --lens-color: var(--lens-structure); color: var(--lens-structure); }
+.lens--representation { --lens-color: var(--lens-representation); color: var(--lens-representation); }
+.lens--emergence { --lens-color: var(--lens-emergence); color: var(--lens-emergence); }
+
+@media (max-width: 700px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    padding-bottom: 0.6rem;
+  }
+  .topbar__nav {
+    width: 100%;
+    margin-left: 0;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .paper__rail {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  html { scroll-behavior: auto; }
+}

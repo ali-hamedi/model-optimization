@@ -1,65 +1,73 @@
-# The Trench · Neural Fold — Reading Constellation
+# Compression as a probe of computation
 
-A 3D "reading constellation" for the model-optimization research project. Papers are
-glowing nodes laid out by a 3D force simulation; read papers glow warm gold, queued
-papers sit cooler and dimmer. Click a node to open its panel-as-page.
+An interactive literature map for the trench question:
 
-**Live:** https://ali-hamedi.github.io/model-optimization/
+> **How does an overparameterized neural network discover and represent the
+> efficient computation that generalizes?**
 
-## Stack
+Live: <https://ali-hamedi.github.io/model-optimization>
 
-- **Vite + React + TypeScript**
-- **three** / **@react-three/fiber** / **@react-three/drei** — the 3D scene
-- **@react-three/postprocessing** — UnrealBloom glow
-- **d3-force-3d** — the 3D force layout (run once on mount, then frozen)
+Ten papers, four lenses — optimization geometry, structure & circuits,
+representation, dynamics & emergence — and the arguments between them. Selecting
+a paper traces its argumentative ancestry: what it stands on, and what it
+provoked. Clicking through opens the actual Obsidian reading note.
 
-## Develop
+## Adding a paper
+
+Two steps, no component changes:
+
+1. Add an entry to `src/data/papers.ts` (id, titles, authors, lenses, roles,
+   summary, `note` slug) and any edges to `src/data/relations.ts`.
+2. Drop the markdown note at `content/papers/<slug>.md`.
+
+The layout in `src/lib/layout.ts` re-solves itself deterministically — same
+input, same map, every time.
+
+## Keeping the notes in sync
+
+The Obsidian vault is the source of truth; `content/` holds a committed
+snapshot.
+
+```bash
+npm run sync      # copy the vault into content/ and public/notes/
+git diff --stat   # look at what changed
+git commit -am "notes: …" && git push
+```
+
+`VAULT=/path/to/vault npm run sync` if the vault is not at `~/Obsidian Vault`.
+
+## Obsidian syntax that is supported
+
+`$inline$` and `$$display$$` LaTeX (KaTeX) · `[[wiki-links]]` resolved to site
+routes · `![[attachments]]` served from `public/notes/` · `#tags` ·
+`~ verbatim paper quotes` · and the research markers, which get their own
+typographic treatment rather than coloured boxes:
+
+| marker | reads as |
+| --- | --- |
+| `PRE::` / `POST::` | the frame around a read |
+| `D::` | deduction |
+| `H::` | hypothesis |
+| `Q::` | open question |
+| `A::` | attack |
+| `C::` | connection — rendered as links back into the map |
+| `O::` | observation |
+
+Markers are also collected automatically into the Synthesis view, so nothing is
+written twice.
+
+## Development
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173/model-optimization/
-npm run build    # type-check + production build to dist/
-npm run preview  # serve the production build locally
+npm run dev
+npm run build     # tsc + vite build, and copies dist/index.html to dist/404.html
+npm run preview
 ```
 
-> The Vite `base` is set to `/model-optimization/` because this is a GitHub Pages
-> **project page**. Without it, hashed assets 404 in production.
+Deployment is `.github/workflows/deploy.yml`: every push to `main` builds and
+publishes to GitHub Pages. `vite.config.ts` sets `base: '/model-optimization/'`;
+the `404.html` copy is what makes deep links such as
+`/model-optimization/papers/lth` survive a refresh.
 
-## Editing content
-
-Everything lives in `src/data/`:
-
-- `papers.ts` — one object per paper. The `synthesis`, `surprises`, and `code`
-  fields ship **empty**; fill them in and they replace the italic placeholders in
-  the detail panel. `read` toggles gold vs. slate; `tier` (0–3) drives node size.
-- `edges.ts` — reading relationships `[idA, idB]`. An edge is gold when both
-  endpoints are read, faint gray otherwise.
-
-## Architecture
-
-```
-src/
-├── App.tsx                 # Canvas + HUD + DetailPanel; owns hover/select state
-├── components/
-│   ├── Scene.tsx           # lights, edges, nodes, OrbitControls, Bloom
-│   ├── PaperNode.tsx       # glowing sphere + billboard label
-│   ├── Edges.tsx           # force-positioned links
-│   ├── HoverCard.tsx       # floating card that follows a hovered node
-│   ├── DetailPanel.tsx     # slide-in "page" (Esc / × to close)
-│   └── Hud.tsx             # title, legend, control hint
-├── hooks/useForceLayout.ts # d3-force-3d sim → frozen id→[x,y,z] map
-└── data/{papers,edges}.ts  # content
-```
-
-The detail panel is the "page" for v1 (no router). It's deliberately swappable for a
-`HashRouter` later — selection is a single id in `App`.
-
-## Deploy
-
-`.github/workflows/deploy.yml` builds with Node 20 and publishes `dist/` to GitHub
-Pages on every push to `main` (via `upload-pages-artifact` + `deploy-pages`). No
-lockfile is committed, so CI uses `npm install`. Enable **Settings → Pages → Source:
-GitHub Actions** once.
-
-> Note: this repo's `.gitignore` ignores `*.md`, so this README must be force-added:
-> `git add -f README.md`.
+See `SESSION.md` for the working record of decisions and open items.

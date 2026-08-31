@@ -1,0 +1,476 @@
+/* =====================================================================
+   The paper map. One drawing: the stage is a fixed 1200x780 coordinate
+   space, so SVG edges and HTML nodes always agree. Everything inside
+   scales with the container (cqw), so the composition never re-flows.
+   ===================================================================== */
+
+.map {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - 3.4rem);
+  padding: clamp(1.1rem, 2.6vw, 2rem) clamp(1rem, 4vw, 3rem) 2rem;
+  max-width: 96rem;
+  margin: 0 auto;
+}
+
+.map__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.1rem 2rem;
+  align-items: end;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.map__question {
+  margin: 0.5rem 0 0;
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.15vw, 1.8rem);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  max-width: 30ch;
+}
+.map__question em {
+  font-style: italic;
+}
+
+.map__sub {
+  margin: 0.6rem 0 0;
+  max-width: 52ch;
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+
+.map__lenskeys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: flex-end;
+}
+
+.lenskey {
+  appearance: none;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.4rem 0.6rem 0.42rem;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--mono);
+  color: var(--ink-2);
+  transition: border-color 200ms var(--ease), background 200ms var(--ease),
+    color 200ms var(--ease);
+}
+.lenskey:hover {
+  border-color: currentColor;
+}
+.lenskey__title {
+  display: block;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.lenskey__q {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.6rem;
+  color: var(--ink-3);
+  max-width: 18ch;
+}
+.lenskey.is-active {
+  color: var(--ink);
+  border-color: currentColor;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+/* ---- stage ----------------------------------------------------------- */
+
+.map__stage {
+  position: relative;
+  width: 100%;
+  /* fills what the header leaves of the first screen, and never more */
+  flex: 1 1 auto;
+  min-height: 420px;
+  container-type: size;
+  margin-top: 0.4rem;
+}
+
+.map__edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.map__layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* lens attractors */
+.lensfield {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.16;
+  stroke-dasharray: 2 7;
+  transition: opacity 260ms var(--ease);
+}
+.lensfield.is-active {
+  opacity: 0.5;
+  stroke-dasharray: 3 5;
+}
+
+.lenslabel {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: var(--mono);
+  pointer-events: none;
+  user-select: none;
+}
+.lenslabel__name {
+  display: block;
+  white-space: nowrap;
+  font-size: clamp(9px, 1.05cqw, 13px);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+.lenslabel__q {
+  display: block;
+  max-width: 28ch;
+  margin: 0.3em 0 0;
+  font-size: clamp(8px, 0.92cqw, 11.5px);
+  color: var(--ink-3);
+  font-style: normal;
+  opacity: 0.7;
+}
+
+/* ---- edges ----------------------------------------------------------- */
+
+.edge {
+  fill: none;
+  stroke: var(--ink-3);
+  transition: opacity 260ms var(--ease), stroke-width 260ms var(--ease),
+    stroke 260ms var(--ease);
+}
+.edge--foundation { stroke-width: 1.6; opacity: 0.42; }
+.edge--refinement { stroke-width: 1.1; opacity: 0.36; }
+.edge--support { stroke-width: 1; opacity: 0.26; stroke-dasharray: 1 4; }
+.edge--bridge { stroke-width: 1.1; opacity: 0.3; stroke-dasharray: 7 6; }
+.edge--counter { stroke-width: 1.3; opacity: 0.42; stroke-dasharray: 10 5 2 5; }
+
+.edge.is-dim { opacity: 0.07; }
+.edge.is-live { opacity: 0.95; stroke: var(--ink); stroke-width: 1.9; }
+
+/* the lineage trace: drawn in argument order, nearest first */
+.edge.is-lineage {
+  opacity: 0.95;
+  stroke: var(--ink);
+  stroke-width: 1.9;
+  stroke-dasharray: var(--len) var(--len);
+  stroke-dashoffset: var(--len);
+  animation: trace 520ms var(--ease) forwards;
+}
+@keyframes trace {
+  to { stroke-dashoffset: 0; }
+}
+
+.edge__hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+  cursor: pointer;
+}
+
+.arrow {
+  fill: var(--ink-3);
+  opacity: 0.5;
+  transition: opacity 260ms var(--ease), fill 260ms var(--ease);
+}
+.arrow.is-dim { opacity: 0.06; }
+.arrow.is-live,
+.arrow.is-lineage { opacity: 1; fill: var(--ink); }
+
+/* ---- nodes ----------------------------------------------------------- */
+
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 13.8cqw;
+  min-width: 112px;
+  max-width: 210px;
+  padding: 0.75cqw 0.85cqw 0.7cqw;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-left: 2px solid currentColor;
+  border-radius: 1px;
+  text-align: left;
+  font-family: var(--mono);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: opacity 260ms var(--ease), border-color 200ms var(--ease),
+    transform 240ms var(--ease), box-shadow 240ms var(--ease);
+  animation: node-settle 620ms var(--ease) backwards;
+  animation-delay: var(--delay, 0ms);
+}
+@keyframes node-settle {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.94)
+      translate(var(--from-x, 0), var(--from-y, 0));
+  }
+}
+
+.node:hover,
+.node:focus-visible {
+  transform: translate(-50%, -50%) translateY(-2px);
+  box-shadow: 0 2px 3px rgba(22, 21, 15, 0.07), 0 20px 34px -20px rgba(22, 21, 15, 0.6);
+}
+
+.node.is-dim {
+  opacity: 0.2;
+}
+.node.is-selected {
+  border-color: currentColor;
+  box-shadow: 0 0 0 1px currentColor, var(--shadow);
+}
+.node.is-neighbour {
+  border-color: color-mix(in srgb, currentColor 55%, var(--rule));
+}
+
+.node__title {
+  display: block;
+  color: var(--ink);
+  font-size: clamp(10.5px, 1.12cqw, 14px);
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+}
+.node__meta {
+  display: block;
+  margin-top: 0.35em;
+  font-size: clamp(8.5px, 0.88cqw, 11px);
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.node__role {
+  display: block;
+  margin-top: 0.45em;
+  font-size: clamp(8px, 0.82cqw, 10px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: currentColor;
+  opacity: 0.9;
+}
+.node__lineage {
+  position: absolute;
+  top: -0.55em;
+  right: -0.55em;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid currentColor;
+  color: currentColor;
+  font-size: clamp(8px, 0.78cqw, 10px);
+  line-height: 1.4em;
+  text-align: center;
+}
+
+/* ---- hover / selection card ------------------------------------------ */
+
+.card {
+  position: absolute;
+  z-index: 20;
+  width: min(23rem, 74cqw);
+  padding: 1rem 1.1rem 1.05rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-top: 2px solid currentColor;
+  border-radius: 1px;
+  box-shadow: 0 2px 4px rgba(22, 21, 15, 0.06), 0 26px 48px -26px rgba(22, 21, 15, 0.7);
+  animation: card-in 200ms var(--ease);
+  pointer-events: none;
+}
+.card.is-pinned {
+  /* docked, so a traced lineage is never hidden behind its own description */
+  pointer-events: auto;
+  position: fixed;
+  right: clamp(1rem, 4vw, 3rem);
+  bottom: clamp(1rem, 3vw, 1.8rem);
+  width: min(23rem, calc(100vw - 2rem));
+  animation: card-dock 220ms var(--ease);
+}
+@keyframes card-dock {
+  from { opacity: 0; transform: translateY(10px); }
+}
+.map.has-selection .legend__hint { visibility: hidden; }
+
+.card__trace {
+  margin: 0.8rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(4px); }
+}
+
+.card__kicker {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: currentColor;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.card__kicker span:last-child { color: var(--ink-3); }
+
+.card__title {
+  margin: 0.55rem 0 0.15rem;
+  font-size: 1.02rem;
+  line-height: 1.24;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.card__authors {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--ink-3);
+}
+.card__summary {
+  margin: 0.7rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.card__rel {
+  margin: 0.75rem 0 0;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--rule-soft);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  display: grid;
+  gap: 0.3rem;
+}
+.card__rel b {
+  font-weight: 500;
+  color: var(--ink);
+}
+.card__open {
+  display: inline-block;
+  margin-top: 0.85rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1px;
+}
+.card__open:hover { border-color: currentColor; }
+
+/* ---- legend / footer of the map -------------------------------------- */
+
+.map__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2.6rem;
+  align-items: flex-start;
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: var(--ink-3);
+}
+.legend__group {
+  display: grid;
+  gap: 0.34rem;
+}
+.legend__head {
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.legend__row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.legend__line {
+  width: 40px;
+  height: 1px;
+  flex: none;
+}
+.legend__hint {
+  margin-left: auto;
+  max-width: 30ch;
+  line-height: 1.6;
+  text-align: right;
+}
+
+/* ---- mobile: the graph becomes an index ------------------------------ */
+
+.map__list {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .map__stage,
+  .map__foot .legend__hint {
+    display: none;
+  }
+  .map__list {
+    display: grid;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 1.4rem;
+  }
+  .map__head {
+    grid-template-columns: 1fr;
+  }
+  .map__lenskeys {
+    justify-content: flex-start;
+  }
+  .listrow {
+    display: block;
+    background: var(--paper);
+    padding: 0.9rem 1rem;
+    text-decoration: none;
+    border-left: 2px solid currentColor;
+  }
+  .listrow__title {
+    display: block;
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+  .listrow__meta {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    color: var(--ink-3);
+    margin-top: 0.25rem;
+  }
+  .listrow__summary {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.86rem;
+    color: var(--ink-2);
+  }
+  .listrow.is-dim { display: none; }
+}

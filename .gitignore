@@ -5,19 +5,19 @@ __pycache__/
 .Python
 *.egg
 *.egg-info/
-dist/
-build/
-eggs/
-parts/
-var/
-sdist/
-develop-eggs/
+/dist/
+/build/
+/eggs/
+/parts/
+/var/
+/sdist/
+/develop-eggs/
 .installed.cfg
-lib/
-lib64/
-wheels/
+/lib/
+/lib64/
+/wheels/
 pip-wheel-metadata/
-share/python-wheels/
+/share/python-wheels/
 *.manifest
 *.spec
 
@@ -35,10 +35,10 @@ venv.bak/
 *.ckpt
 *.safetensors
 checkpoints/
-runs/
+/runs/
 wandb/
 mlruns/
-outputs/
+/outputs/
 lightning_logs/
 
 *.h5
@@ -49,8 +49,8 @@ lightning_logs/
 *.pickle
 *.parquet
 *.feather
-data/
-datasets/
+/data/
+/datasets/
 
 .ipynb_checkpoints/
 
@@ -92,4 +92,7 @@ secrets/
 
 
 
-*.md
+
+# The Python defaults above are anchored to the repo root on purpose:
+# an unanchored `lib/` or `build/` would swallow src/lib and the site build.
+# NOTE: research notes under content/ are the source of truth - never ignore markdown.

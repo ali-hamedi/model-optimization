@@ -1,0 +1,486 @@
+/* =====================================================================
+   The reading column. A typeset research notebook: one measure, one
+   scale, wide margins. Research markers are set with rules, spacing and
+   small-caps tags — never as coloured callout boxes.
+   ===================================================================== */
+
+.paper {
+  --flag: #9a4630;
+  --accent: var(--ink-2);
+  color: var(--ink);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: clamp(1.6rem, 4vw, 3rem) clamp(1rem, 4vw, 3rem) 6rem;
+}
+:root[data-theme='dark'] .paper { --flag: #d08a70; }
+
+@media (min-width: 1100px) {
+  .paper {
+    grid-template-columns: 15rem minmax(0, 1fr);
+  }
+  .paper__rail {
+    grid-row: 2;
+  }
+}
+
+.paper__head {
+  grid-column: 1 / -1;
+  padding-bottom: 1.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.paper__back {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-decoration: none;
+}
+.paper__back:hover { color: var(--ink); }
+
+.paper__title {
+  margin: 1rem 0 0;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+  font-weight: 400;
+  max-width: 24ch;
+}
+
+.paper__byline {
+  margin: 0.6rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: var(--ink-2);
+}
+
+.paper__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  margin: 1.1rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+.paper__facts b {
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.paper__trench {
+  margin: 1.2rem 0 0;
+  max-width: 62ch;
+  font-size: 1rem;
+  line-height: 1.62;
+  color: var(--ink-2);
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--accent);
+}
+
+/* ---- rail ------------------------------------------------------------ */
+
+.paper__rail {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--ink-3);
+  align-self: start;
+  position: sticky;
+  top: 4.4rem;
+  display: grid;
+  gap: 1.6rem;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-right: 0.4rem;
+}
+.rail__head {
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.55rem;
+}
+.rail__item {
+  display: block;
+  padding: 0.3rem 0;
+  color: var(--ink-2);
+  text-decoration: none;
+  line-height: 1.45;
+  border-left: 2px solid transparent;
+  padding-left: 0.5rem;
+  margin-left: -0.5rem;
+  transition: border-color 180ms var(--ease), color 180ms var(--ease);
+}
+.rail__item:hover {
+  color: var(--ink);
+  border-left-color: currentColor;
+}
+.rail__verb {
+  color: var(--ink-3);
+  font-style: italic;
+}
+.rail__count {
+  float: right;
+  color: var(--ink-3);
+}
+
+/* ---- prose ----------------------------------------------------------- */
+
+.prose {
+  max-width: var(--measure);
+  font-size: 1.02rem;
+}
+.prose > *:first-child { margin-top: 0; }
+
+.prose h1 {
+  font-size: 1.55rem;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
+  font-weight: 400;
+  margin: 2.6rem 0 0.9rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--rule);
+}
+.prose h2 {
+  font-size: 1.28rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  margin: 2.4rem 0 0.7rem;
+}
+.prose h3 {
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin: 1.9rem 0 0.5rem;
+}
+.prose h4,
+.prose h5 {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin: 1.7rem 0 0.5rem;
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  position: relative;
+}
+.prose .anchor {
+  position: absolute;
+  left: -1.1rem;
+  color: var(--ink-3);
+  opacity: 0;
+  text-decoration: none;
+  font-size: 0.8em;
+  transition: opacity 160ms var(--ease);
+}
+.prose h1:hover .anchor,
+.prose h2:hover .anchor,
+.prose h3:hover .anchor { opacity: 0.55; }
+
+.prose p { margin: 0 0 1.05rem; }
+.prose ul,
+.prose ol { margin: 0 0 1.05rem; padding-left: 1.3rem; }
+.prose li { margin: 0.25rem 0; }
+.prose li::marker { color: var(--ink-3); }
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2.2rem 0;
+}
+
+.prose blockquote {
+  margin: 1.3rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--rule);
+  color: var(--ink-2);
+}
+
+.prose img { max-width: 100%; height: auto; }
+.note-figure {
+  margin: 1.6rem 0;
+  padding: 0.7rem;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--paper-2);
+  padding: 0.08em 0.3em;
+  border-radius: 2px;
+}
+.prose pre,
+.prose .code {
+  overflow-x: auto;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-soft);
+  padding: 0.9rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin: 1.3rem 0;
+}
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin: 1.4rem 0;
+}
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--rule-soft);
+  vertical-align: top;
+}
+.prose th {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom-color: var(--rule);
+}
+.table-scroll { overflow-x: auto; }
+
+/* ---- obsidian-isms --------------------------------------------------- */
+
+.wikilink {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  white-space: nowrap;
+}
+.wikilink:hover { border-bottom-color: currentColor; }
+.wikilink--unwritten {
+  color: var(--ink-3);
+  border-bottom: 1px dotted var(--rule);
+}
+
+.hashtag {
+  font-family: var(--mono);
+  font-size: 0.72em;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  padding: 0.06em 0.34em;
+  white-space: nowrap;
+}
+
+.verbatim {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 0.2rem 0 0.2rem 1.15rem;
+  border-left: 3px double var(--rule);
+  font-style: italic;
+  color: var(--ink-2);
+}
+.verbatim__body > p:last-child { margin-bottom: 0; }
+.verbatim__note {
+  display: block;
+  margin-top: 0.4rem;
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ---- research markers ------------------------------------------------ */
+
+.marker {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 0.15rem 0 0.15rem 1.15rem;
+  border-left: 2px solid var(--ink-3);
+  scroll-margin-top: 5rem;
+}
+.marker__tag {
+  position: absolute;
+  left: -3.4rem;
+  top: 0.16rem;
+  width: 2.6rem;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+.marker__glyph {
+  display: inline-block;
+  margin-right: 0.3em;
+  opacity: 0.8;
+}
+.marker__label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.3rem;
+}
+.marker__body > *:last-child { margin-bottom: 0; }
+.marker__body > p { margin-bottom: 0.6rem; }
+
+@media (max-width: 1000px) {
+  .marker__tag {
+    position: static;
+    display: inline;
+    width: auto;
+    text-align: left;
+    margin-right: 0.5rem;
+  }
+}
+
+/* deduction — the assertive one: solid rule, upright */
+.marker--d { border-left-color: var(--ink); }
+.marker--d .marker__label { color: var(--ink-2); }
+
+/* observation — quiet */
+.marker--o { border-left-style: solid; border-left-color: var(--rule); }
+
+/* open question — unresolved: dotted rule, italic body */
+.marker--q { border-left-style: dotted; border-left-width: 3px; }
+.marker--q .marker__body { font-style: italic; }
+
+/* hypothesis — provisional: dashed */
+.marker--h { border-left-style: dashed; }
+
+/* attack — the only place colour is used as judgement */
+.marker--a {
+  border-left-color: var(--flag);
+  border-left-width: 3px;
+}
+.marker--a .marker__label,
+.marker--a .marker__tag { color: var(--flag); }
+
+/* connection — an exit from the note back into the map */
+.marker--c { border-left-color: var(--ink-3); }
+.marker--c .marker__body { font-family: var(--mono); font-size: 0.88rem; }
+.marker--c .wikilink {
+  border-bottom-color: currentColor;
+}
+.marker--c .wikilink::after {
+  content: ' ↗';
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+/* before / after reading — the frame around the read */
+.marker--pre,
+.marker--post {
+  border-left: none;
+  padding: 1rem 1.2rem;
+  background: var(--paper-2);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.marker--pre .marker__tag,
+.marker--post .marker__tag {
+  position: static;
+  display: none;
+}
+.marker--pre .marker__label,
+.marker--post .marker__label {
+  color: var(--ink-2);
+  margin-bottom: 0.5rem;
+}
+
+/* ---- math ------------------------------------------------------------ */
+
+.math-display {
+  margin: 1.4rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.2rem 0;
+}
+.katex { font-size: 1.02em; }
+.katex-display { margin: 0; }
+.tex-fail { color: var(--flag); }
+
+/* ---- generic research pages ------------------------------------------ */
+
+.doc {
+  display: grid;
+  gap: 2.5rem;
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: clamp(1.6rem, 4vw, 3rem) clamp(1rem, 4vw, 3rem) 6rem;
+}
+@media (min-width: 1100px) {
+  .doc { grid-template-columns: 15rem minmax(0, 1fr); }
+  .doc__head { grid-column: 1 / -1; }
+}
+.doc__head { padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+
+/* ---- world-model timeline -------------------------------------------- */
+
+.timeline .prose {
+  position: relative;
+  border-left: 1px solid var(--rule);
+  padding-left: clamp(1.4rem, 3vw, 2.6rem);
+  max-width: 68ch;
+}
+.timeline .prose h1,
+.timeline .prose h2 {
+  position: relative;
+  border-bottom: 0;
+  font-size: 1.22rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 3.2rem;
+  padding-bottom: 0;
+  scroll-margin-top: 5rem;
+}
+.timeline .prose h1::before,
+.timeline .prose h2::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * clamp(1.4rem, 3vw, 2.6rem) - 4.5px);
+  top: 0.62em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--ink-2);
+}
+.timeline .prose h1::before {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.timeline .prose hr { display: none; }
+
+/* markers behave as pull-quotes inside the timeline */
+.timeline .marker { margin-left: 0; }
+
+/* a marker written inside a list stays in the list */
+.marker-inline {
+  font-family: var(--mono);
+  font-size: 0.66em;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  padding: 0.08em 0.34em;
+  margin-right: 0.15em;
+  white-space: nowrap;
+  vertical-align: 0.08em;
+  scroll-margin-top: 5rem;
+}
+.marker-inline--a { color: var(--flag); border-color: color-mix(in srgb, var(--flag) 35%, transparent); }
+.marker-inline--d { color: var(--ink-2); border-color: var(--rule); }
