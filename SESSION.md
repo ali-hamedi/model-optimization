@@ -48,7 +48,7 @@ src/styles/              base.css, map.css, note.css
       https://ali-hamedi.github.io/model-optimization (deep link /papers/lth
       returns the app via 404.html; assets and note images 200)
 
-## Verified in production
+## Verified in production (after the workflow won the race — see OPEN ITEM)
 - `/` renders the map, `/papers/lth` deep-links and survives a refresh
   (GitHub serves 404.html with a 404 *status* — that is expected and correct).
 - Google fonts, hashed JS/CSS and `public/notes/*.png` all load under
