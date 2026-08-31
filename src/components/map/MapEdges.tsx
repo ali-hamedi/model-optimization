@@ -1,18 +1,17 @@
 import { useMemo } from 'react';
-import { LENSES } from '../../data/lenses';
+import { RELATION_LABEL } from '../../data/lenses';
 import { RELATIONS } from '../../data/relations';
-import { MAP_H, MAP_W, NODE_POS, lensAnchor } from '../../lib/layout';
+import { MAP_H, MAP_W, NODE_POS } from '../../lib/layout';
 import { edgeGeometry } from '../../lib/geometry';
 
 export type EdgeState = 'idle' | 'dim' | 'live' | 'lineage';
 
 interface Props {
   edgeState: (source: string, target: string) => { state: EdgeState; depth: number };
-  activeLens: string | null;
   onHoverEdge: (key: string | null) => void;
 }
 
-export default function MapEdges({ edgeState, activeLens, onHoverEdge }: Props) {
+export default function MapEdges({ edgeState, onHoverEdge }: Props) {
   const geometry = useMemo(
     () =>
       RELATIONS.map((r) => ({
@@ -29,16 +28,6 @@ export default function MapEdges({ edgeState, activeLens, onHoverEdge }: Props) 
       preserveAspectRatio="none"
       aria-hidden="true"
     >
-      {LENSES.map((l) => (
-        <circle
-          key={l.id}
-          className={`lensfield lens--${l.id}${activeLens === l.id ? ' is-active' : ''}`}
-          cx={lensAnchor[l.id].x}
-          cy={lensAnchor[l.id].y}
-          r={196}
-        />
-      ))}
-
       {geometry.map(({ relation, geo }) => {
         const key = `${relation.source}->${relation.target}`;
         const { state, depth } = edgeState(relation.source, relation.target);
@@ -77,6 +66,17 @@ export default function MapEdges({ edgeState, activeLens, onHoverEdge }: Props) 
               points="0,-3.4 8,0 0,3.4"
               transform={`translate(${geo.arrow.x} ${geo.arrow.y}) rotate(${geo.arrow.angle})`}
             />
+            {(state === 'live' || state === 'lineage') && (
+              <text
+                className="edge__label"
+                x={geo.mid.x}
+                y={geo.mid.y}
+                textAnchor="middle"
+                dominantBaseline="middle"
+              >
+                {RELATION_LABEL[relation.type]}
+              </text>
+            )}
             <path
               className="edge__hit"
               d={geo.d}

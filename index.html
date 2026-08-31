@@ -3,17 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     <meta
       name="description"
-      content="Compression as a probe of computation: an interactive literature map of how overparameterized neural networks discover and represent the efficient computation that generalizes."
+      content="Reading notes on how overparameterized neural networks find the efficient computation that generalizes: ten papers, four lenses, and the arguments between them."
     />
-    <title>Compression as a probe of computation — literature map</title>
+    <title>Compression as a probe of computation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap"
       rel="stylesheet"
     />
+    <script>
+      /* Settle the theme before first paint, so a dark-mode reader never
+         gets a white flash on the way in. */
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          if (saved === 'light' || saved === 'dark') {
+            document.documentElement.dataset.theme = saved;
+          }
+        } catch (e) {
+          /* storage blocked: fall through to the system preference */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

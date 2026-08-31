@@ -7,7 +7,7 @@ import {
   ROLE_LABEL,
 } from '../../data/lenses';
 import { paperById } from '../../data/papers';
-import { relationsFor } from '../../data/relations';
+import { neighboursOf, relationsFor } from '../../data/relations';
 import { NODE_POS, MAP_W, MAP_H } from '../../lib/layout';
 import type { Lineage } from '../../lib/ancestry';
 
@@ -25,8 +25,23 @@ export default function MapCard({
   lineage?: Lineage | null;
 }) {
   const pos = NODE_POS[paper.id];
-  const onLeft = pos.x > MAP_W * 0.55;
   const relations = relationsFor(paper.id).slice(0, 4);
+
+  // Put the card on whichever side hides the least: the annotation must never
+  // cover the neighbours whose edges it is explaining.
+  const NEED = 380;
+  const neighbours = [...neighboursOf(paper.id)].map((id) => NODE_POS[id]);
+  const cost = (side: 'left' | 'right') => {
+    const blocked = neighbours.filter((n) =>
+      side === 'left' ? n.x < pos.x : n.x > pos.x,
+    ).length;
+    const room = side === 'left' ? pos.x : MAP_W - pos.x;
+    return blocked * 220 + Math.max(0, NEED - room);
+  };
+  const onLeft = cost('left') <= cost('right');
+
+  // sit beside the node, roughly level with it, and never off the plate
+  const top = Math.min(64, Math.max(2, (pos.y / MAP_H) * 100 - 13));
 
   return (
     <div
@@ -37,7 +52,7 @@ export default function MapCard({
           : {
               left: onLeft ? undefined : `${(pos.x / MAP_W) * 100}%`,
               right: onLeft ? `${100 - (pos.x / MAP_W) * 100}%` : undefined,
-              top: `${Math.min(72, (pos.y / MAP_H) * 100 + 2)}%`,
+              top: `${top}%`,
               marginLeft: onLeft ? undefined : '6.5rem',
               marginRight: onLeft ? '6.5rem' : undefined,
             }
@@ -58,7 +73,7 @@ export default function MapCard({
         {paper.venue ? ` · ${paper.venue}` : ''}
       </div>
       <p className="card__summary">{paper.summary}</p>
-      {relations.length > 0 && (
+      {pinned && relations.length > 0 && (
         <div className="card__rel">
           {relations.map((r) => {
             const outgoing = r.source === paper.id;

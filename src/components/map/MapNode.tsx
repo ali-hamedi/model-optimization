@@ -4,7 +4,6 @@ import { NODE_POS, MAP_W, MAP_H } from '../../lib/layout';
 
 interface Props {
   paper: Paper;
-  index: number;
   state: 'idle' | 'dim' | 'neighbour' | 'selected';
   lineage: 'ancestor' | 'descendant' | null;
   onHover: (id: string | null) => void;
@@ -14,7 +13,6 @@ interface Props {
 
 export default function MapNode({
   paper,
-  index,
   state,
   lineage,
   onHover,
@@ -40,10 +38,6 @@ export default function MapNode({
         {
           left: `${(pos.x / MAP_W) * 100}%`,
           top: `${(pos.y / MAP_H) * 100}%`,
-          // settle outwards from the centre: the map assembles itself
-          '--delay': `${120 + index * 45}ms`,
-          '--from-x': `${(MAP_W / 2 - pos.x) * 0.06}px`,
-          '--from-y': `${(MAP_H / 2 - pos.y) * 0.06}px`,
         } as React.CSSProperties
       }
       aria-pressed={state === 'selected'}

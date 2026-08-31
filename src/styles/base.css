@@ -2,23 +2,29 @@
    Compression as a probe of computation — design system.
    Two families: Source Serif 4 (reading), IBM Plex Mono (apparatus).
    One ground: paper. Colour is semantic only — it always means a lens.
+
+   Theme: the light palette is the base. Dark is applied either by the
+   system preference (unless the reader has explicitly asked for light)
+   or by data-theme, which the toggle sets and index.html restores
+   before first paint.
    ===================================================================== */
 
 :root {
-  --paper: #f7f5f0;
-  --paper-2: #f0ede5;
-  --paper-3: #e7e3d9;
-  --ink: #16150f;
-  --ink-2: #46433b;
-  --ink-3: #7d786c;
-  --rule: rgba(22, 21, 15, 0.16);
-  --rule-soft: rgba(22, 21, 15, 0.08);
-  --shadow: 0 1px 2px rgba(22, 21, 15, 0.06), 0 12px 28px -18px rgba(22, 21, 15, 0.5);
+  --paper: #f8f6f1;
+  --paper-2: #f1eee6;
+  --paper-3: #e8e4da;
+  --ink: #191811;
+  --ink-2: #4a473e;
+  --ink-3: #7f7a6d;
+  --rule: rgba(25, 24, 17, 0.16);
+  --rule-soft: rgba(25, 24, 17, 0.08);
+  --shadow: 0 1px 2px rgba(25, 24, 17, 0.06), 0 12px 28px -18px rgba(25, 24, 17, 0.5);
+  --lift: rgba(25, 24, 17, 0.55);
 
-  --lens-geometry: #23636c;
+  --lens-geometry: #1f5f68;
   --lens-structure: #8a5314;
   --lens-representation: #6b3a60;
-  --lens-emergence: #3a5486;
+  --lens-emergence: #38507f;
 
   --serif: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -29,21 +35,44 @@
   color-scheme: light;
 }
 
-:root[data-theme='dark'] {
-  --paper: #131414;
-  --paper-2: #1a1b1b;
-  --paper-3: #232424;
-  --ink: #e9e5da;
-  --ink-2: #b3aea1;
-  --ink-3: #837e72;
-  --rule: rgba(233, 229, 218, 0.18);
-  --rule-soft: rgba(233, 229, 218, 0.08);
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 16px 34px -20px rgba(0, 0, 0, 0.9);
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #17171a;
+    --paper-2: #1e1e21;
+    --paper-3: #26262a;
+    --ink: #ece8de;
+    --ink-2: #b6b1a4;
+    --ink-3: #868073;
+    --rule: rgba(236, 232, 222, 0.2);
+    --rule-soft: rgba(236, 232, 222, 0.09);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 16px 34px -20px rgba(0, 0, 0, 0.9);
+    --lift: rgba(0, 0, 0, 0.75);
 
-  --lens-geometry: #6fb3ba;
-  --lens-structure: #d09a4e;
-  --lens-representation: #bb8ab2;
-  --lens-emergence: #8ba6d9;
+    --lens-geometry: #74b8bf;
+    --lens-structure: #d8a25a;
+    --lens-representation: #c091b6;
+    --lens-emergence: #93addc;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --paper: #17171a;
+  --paper-2: #1e1e21;
+  --paper-3: #26262a;
+  --ink: #ece8de;
+  --ink-2: #b6b1a4;
+  --ink-3: #868073;
+  --rule: rgba(236, 232, 222, 0.2);
+  --rule-soft: rgba(236, 232, 222, 0.09);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 16px 34px -20px rgba(0, 0, 0, 0.9);
+  --lift: rgba(0, 0, 0, 0.75);
+
+  --lens-geometry: #74b8bf;
+  --lens-structure: #d8a25a;
+  --lens-representation: #c091b6;
+  --lens-emergence: #93addc;
 
   color-scheme: dark;
 }
@@ -67,21 +96,6 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-}
-
-/* A barely-there grid: the ground of a plotted figure, not a dashboard. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.5;
-  background-image:
-    linear-gradient(to right, var(--rule-soft) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--rule-soft) 1px, transparent 1px);
-  background-size: 96px 96px;
-  mask-image: radial-gradient(120% 100% at 50% 0%, #000 20%, transparent 85%);
 }
 
 a {
@@ -111,9 +125,8 @@ a:hover {
 }
 
 .eyebrow {
-  font-size: 0.64rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
   color: var(--ink-3);
 }
 
@@ -155,9 +168,8 @@ a:hover {
 
 .topbar__mark {
   font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
   color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
@@ -192,20 +204,27 @@ a:hover {
 }
 
 .theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  margin-left: 0.4rem;
+  align-self: center;
   background: none;
-  border: 1px solid var(--rule);
+  border: 1px solid transparent;
+  border-radius: 999px;
   color: var(--ink-3);
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
-  padding: 0.25rem 0.5rem;
   cursor: pointer;
-  border-radius: 2px;
-  transition: color 180ms var(--ease), border-color 180ms var(--ease);
+  transition: color 180ms var(--ease), background 180ms var(--ease);
 }
 .theme-toggle:hover {
   color: var(--ink);
-  border-color: var(--ink-3);
+  background: var(--paper-2);
+}
+.theme-toggle svg {
+  width: 15px;
+  height: 15px;
+  display: block;
 }
 
 .page {
@@ -217,11 +236,17 @@ a:hover {
   border-top: 1px solid var(--rule);
   padding: 1.4rem clamp(1rem, 4vw, 3rem) 2.4rem;
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   color: var(--ink-3);
   display: flex;
-  gap: 1.2rem;
+  gap: 0.6rem 1.4rem;
   flex-wrap: wrap;
+}
+.sitefoot a {
+  color: inherit;
+}
+.sitefoot a:hover {
+  color: var(--ink);
 }
 
 /* ---- shared page furniture ------------------------------------------ */
@@ -274,10 +299,15 @@ a:hover {
     padding-bottom: 0.6rem;
   }
   .topbar__nav {
+    order: 2;
     width: 100%;
     margin-left: 0;
     gap: 0.9rem;
     flex-wrap: wrap;
+  }
+  .theme-toggle {
+    order: 1;
+    margin-left: auto;
   }
   .paper__rail {
     position: static;

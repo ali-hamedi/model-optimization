@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { LENSES, ROLE_LABEL } from '../data/lenses';
 import { PAPERS, paperById } from '../data/papers';
@@ -14,7 +14,24 @@ import Legend from '../components/map/Legend';
 export default function MapView() {
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
-  const [hovered, setHovered] = useState<string | null>(null);
+  const [hovered, setHoveredNow] = useState<string | null>(null);
+  const [hoveredEdge, setHoveredEdge] = useState<string | null>(null);
+  const hoverTimer = useRef<number | undefined>(undefined);
+
+  /**
+   * Hover intent: a short delay on the way in so sweeping the cursor across the
+   * map does not flash four cards, and a longer one on the way out so moving
+   * between a node and its card does not drop the annotation.
+   */
+  const setHovered = useCallback((id: string | null) => {
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(
+      () => setHoveredNow(id),
+      id ? 70 : 160,
+    );
+  }, []);
+
+  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
 
   const selected = params.get('p');
   const lens = params.get('lens') as LensId | null;
@@ -84,14 +101,16 @@ export default function MapView() {
         );
         return hit ? { state: 'lineage', depth: hit.depth } : { state: 'dim', depth: 0 };
       }
+      if (hoveredEdge === `${source}->${target}`) return { state: 'live', depth: 0 };
       if (hovered) {
         return source === hovered || target === hovered
           ? { state: 'live', depth: 0 }
           : { state: 'dim', depth: 0 };
       }
+      if (hoveredEdge) return { state: 'dim', depth: 0 };
       return { state: 'idle', depth: 0 };
     },
-    [hovered, lineage, inLens],
+    [hovered, hoveredEdge, lineage, inLens],
   );
 
   const cardPaper = hovered
@@ -102,48 +121,52 @@ export default function MapView() {
 
   return (
     <section className={`map${selected && !hovered ? ' has-selection' : ''}`}>
-      <header className="map__head">
-        <div>
-          <p className="eyebrow">The trench · a literature map</p>
-          <h1 className="map__question">
-            How does an overparameterized neural network discover and represent
-            the <em>efficient computation that generalizes?</em>
-          </h1>
-          <p className="map__sub">
-            Ten papers, read through four lenses, with compression used as the
-            probe. Every edge is an argument: what founds what, what counters
-            what, and where the story was corrected.
-          </p>
-        </div>
-        <div className="map__lenskeys">
+      <header className="masthead">
+        <h1 className="masthead__title">
+          How does an overparameterized neural network discover and represent
+          the <em>efficient computation that generalizes?</em>
+        </h1>
+      </header>
+
+      <div className="plate__caption">
+        <p className="plate__label">
+          Ten papers, four lenses, and the arguments between them. Click one to
+          see what it stands on and what it provoked.
+        </p>
+        <nav className="plate__filters" aria-label="Filter by lens">
           {LENSES.map((l) => (
             <button
               key={l.id}
               type="button"
-              className={`lenskey lens--${l.id}${lens === l.id ? ' is-active' : ''}`}
+              className={`lensfilter lens--${l.id}${lens === l.id ? ' is-active' : ''}`}
               onClick={() => setParam('lens', lens === l.id ? null : l.id)}
               aria-pressed={lens === l.id}
+              title={l.question}
             >
-              <span className="lenskey__title">
-                <i className="lens-dot" />
-                {l.title}
-              </span>
-              <span className="lenskey__q">{l.question}</span>
+              <i className="lens-dot" />
+              {l.title.replace(/^Optimization /, '').replace(/ & Circuits| & Emergence/, '')}
             </button>
           ))}
-        </div>
-      </header>
+          {lens && (
+            <button type="button" className="lensfilter lensfilter--clear" onClick={() => setParam('lens', null)}>
+              clear
+            </button>
+          )}
+        </nav>
+      </div>
 
       <div
         className="map__stage"
-        onMouseLeave={() => setHovered(null)}
+        onMouseLeave={() => {
+          setHovered(null);
+          setHoveredEdge(null);
+        }}
         role="group"
         aria-label="Paper map"
       >
         <MapEdges
           edgeState={edgeState}
-          activeLens={lens}
-          onHoverEdge={() => undefined}
+          onHoverEdge={setHoveredEdge}
         />
 
         <div className="map__layer">
@@ -171,11 +194,10 @@ export default function MapView() {
             </span>
           ))}
 
-          {PAPERS.map((p, i) => (
+          {PAPERS.map((p) => (
             <MapNode
               key={p.id}
               paper={p}
-              index={i}
               state={nodeState(p.id)}
               lineage={lineageRole(p.id)}
               onHover={setHovered}
