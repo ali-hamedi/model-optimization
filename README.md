@@ -65,6 +65,17 @@ npm run build     # tsc + vite build, and copies dist/index.html to dist/404.htm
 npm run preview
 ```
 
+### One setting to check on GitHub
+
+**Settings → Pages → Build and deployment → Source must be _GitHub Actions_.**
+
+If it is set to _Deploy from a branch_, GitHub also runs its own legacy
+"pages build and deployment" job on every push. That job publishes the raw
+repository (the un-built `index.html`, which points at `/src/main.tsx`) and
+races our workflow — whichever finishes last wins, so the site flickers between
+the real build and a blank page. Both jobs report success, which is what makes
+it confusing. Switching the source to GitHub Actions stops the legacy job.
+
 Deployment is `.github/workflows/deploy.yml`: every push to `main` builds and
 publishes to GitHub Pages. `vite.config.ts` sets `base: '/model-optimization/'`;
 the `404.html` copy is what makes deep links such as

@@ -54,6 +54,20 @@ src/styles/              base.css, map.css, note.css
 - Google fonts, hashed JS/CSS and `public/notes/*.png` all load under
   `/model-optimization/`.
 
+## OPEN ITEM — GitHub Pages source setting
+Two deployments run on every push and race each other:
+`Deploy to GitHub Pages` (our workflow, publishes `dist/`) and
+`pages build and deployment` (GitHub's legacy branch job, publishes the raw
+repo root). The legacy job only runs when **Settings → Pages → Source** is
+_Deploy from a branch_. Both report success; the last one to finish wins, so
+the live site alternates between the real build and a blank page whose
+index.html points at `/src/main.tsx`.
+
+**Fix (one click, needs the repo owner):** Settings → Pages → Build and
+deployment → Source → **GitHub Actions**.
+
+Until that is changed, a re-run of our workflow puts the correct build back.
+
 ## Notes / gotchas
 - `.gitignore` used to contain `*.md` (swallows every note) and an unanchored
   `lib/` (swallows `src/lib/`). Both fixed; the Python patterns are now anchored
