@@ -187,7 +187,7 @@ export const lensLabelAnchor: Record<
       l.id,
       {
         x: left ? 26 : MAP_W - 26,
-        y: top ? 18 : MAP_H - 84,
+        y: top ? 18 : MAP_H - 130,
         align: left ? 'left' : 'right',
       },
     ];

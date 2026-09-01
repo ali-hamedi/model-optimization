@@ -109,6 +109,9 @@
   /* fills what the header leaves of the first screen, and never more */
   flex: 1 1 auto;
   min-height: 420px;
+  /* clears room for the bottom-row lens labels, which are tall enough
+     (padding + border) to spill past the stage box otherwise */
+  padding-bottom: 3.5rem;
   container-type: size;
   margin-top: 0.4rem;
 }
@@ -159,15 +162,15 @@
 
 .edge {
   fill: none;
-  stroke: var(--ink-3);
+  stroke: var(--ink-2);
   transition: opacity 260ms var(--ease), stroke-width 260ms var(--ease),
     stroke 260ms var(--ease);
 }
-.edge--foundation { stroke-width: 1.3; opacity: 0.34; }
-.edge--refinement { stroke-width: 1; opacity: 0.26; }
-.edge--support { stroke-width: 1; opacity: 0.2; stroke-dasharray: 1 4; }
-.edge--bridge { stroke-width: 1; opacity: 0.22; stroke-dasharray: 5 5; }
-.edge--counter { stroke-width: 1.1; opacity: 0.3; stroke-dasharray: 5 5; }
+.edge--foundation { stroke-width: 1.9; opacity: 0.62; }
+.edge--refinement { stroke-width: 1.5; opacity: 0.52; }
+.edge--support { stroke-width: 1.5; opacity: 0.48; stroke-dasharray: 1 4; }
+.edge--bridge { stroke-width: 1.5; opacity: 0.5; stroke-dasharray: 5 5; }
+.edge--counter { stroke-width: 1.7; opacity: 0.58; stroke-dasharray: 5 5; }
 
 .edge.is-dim { opacity: 0.07; }
 .edge.is-live { opacity: 0.95; stroke: var(--ink); stroke-width: 1.9; }

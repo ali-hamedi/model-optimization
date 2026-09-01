@@ -225,7 +225,7 @@ Hence Li et al. want
 $$
 {\theta_0+\operatorname{Col}(P)}
 $$
-with random $θ_0$$ **and** random orientation P <span style="color:cyan;">so the sampled subspace has no privileged geometric relationship to the solution set</span>
+with random $θ_0$ **and** random orientation P <span style="color:cyan;">so the sampled subspace has no privileged geometric relationship to the solution set</span>
  
 
 Columns of P may also be orthogonalized if desired, but in our experiments we relied simply on the approximate orthogonality of high dimensional random vectors. By this construction P forms an approximately orthonormal basis for a randomly oriented d dimensional subspace of $R_D$ , with the origin of the new coordinate system at $θ_0(D)$
