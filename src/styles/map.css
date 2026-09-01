@@ -110,8 +110,9 @@
   flex: 1 1 auto;
   min-height: 420px;
   /* clears room for the bottom-row lens labels, which are tall enough
-     (padding + border) to spill past the stage box otherwise */
-  padding-bottom: 3.5rem;
+     (padding + border) to spill past the stage box otherwise, plus real
+     breathing room before the legend/footer below */
+  padding-bottom: 6.5rem;
   container-type: size;
   margin-top: 0.4rem;
 }
@@ -363,7 +364,7 @@
 
 .map__foot {
   margin-top: auto;
-  padding-top: 0.9rem;
+  padding-top: 1.4rem;
   border-top: 1px solid var(--rule);
   font-family: var(--mono);
   font-size: 0.7rem;
