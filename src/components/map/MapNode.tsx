@@ -41,7 +41,8 @@ export default function MapNode({
         } as React.CSSProperties
       }
       aria-pressed={state === 'selected'}
-      aria-label={`${paper.title}. ${paper.authors}, ${paper.year}. ${ROLE_LABEL[paper.roles[0]]}.`}
+      aria-label={`${paper.title}. ${paper.authors}, ${paper.year}. ${ROLE_LABEL[paper.roles[0]]}. Double-click to open its reading note.`}
+      title="Double-click to open reading note"
       onMouseEnter={() => onHover(paper.id)}
       onMouseLeave={() => onHover(null)}
       onFocus={() => onHover(paper.id)}
