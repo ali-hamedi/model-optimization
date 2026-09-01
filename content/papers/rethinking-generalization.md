@@ -673,7 +673,7 @@ why optimization is empirically easy must be different from the true cause of ge
 $$
 Xw=y
 $$
-has infinitely many solutions, then all of them have zero training error. The minimum-$\ell2$​-norm interpolant is the one solving
+has infinitely many solutions, then all of them have zero training error. The minimum-$\ell_2$​-norm interpolant is the one solving
 $$
 w⋆=argwmin​∥w∥_2​ s.t. Xw=y
 $$

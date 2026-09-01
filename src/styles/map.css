@@ -53,46 +53,52 @@
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.1rem 0.2rem;
+  gap: 0.5rem;
   margin-left: auto;
   font-family: var(--mono);
 }
 
 .lensfilter {
   appearance: none;
-  background: none;
-  border: 0;
-  border-bottom: 1px solid transparent;
-  padding: 0.1rem 0.42rem 0.14rem;
+  display: inline-flex;
+  align-items: center;
+  background: color-mix(in srgb, currentColor 10%, var(--paper));
+  border: 1px solid color-mix(in srgb, currentColor 38%, transparent);
+  border-radius: 999px;
+  padding: 0.32rem 0.75rem;
   cursor: pointer;
-  color: var(--ink-3);
   font-family: inherit;
-  font-size: 0.66rem;
-  letter-spacing: 0.09em;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
   text-transform: lowercase;
-  transition: color 160ms var(--ease), border-color 160ms var(--ease);
+  opacity: 0.7;
+  transition: opacity 160ms var(--ease), background 160ms var(--ease),
+    border-color 160ms var(--ease);
 }
 .lensfilter .lens-dot {
-  width: 0.42em;
-  height: 0.42em;
-  opacity: 0.55;
-  transition: opacity 160ms var(--ease);
-}
-.lensfilter:hover {
-  color: var(--ink);
-}
-.lensfilter:hover .lens-dot,
-.lensfilter.is-active .lens-dot {
+  width: 0.5em;
+  height: 0.5em;
   opacity: 1;
 }
+.lensfilter:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 16%, var(--paper));
+}
 .lensfilter.is-active {
-  color: var(--ink);
-  border-bottom-color: var(--lens-color, var(--ink));
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 22%, var(--paper));
+  border-color: currentColor;
 }
 .lensfilter--clear {
+  opacity: 0.55;
   color: var(--ink-3);
   font-style: italic;
   letter-spacing: 0.04em;
+  background: none;
+  border-color: transparent;
+}
+.lensfilter--clear:hover {
+  opacity: 1;
 }
 
 /* ---- stage ----------------------------------------------------------- */
@@ -122,8 +128,12 @@
 
 .lenslabel {
   position: absolute;
-  transform: translate(-50%, -50%);
-  text-align: center;
+  max-width: 15rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-top: 2px solid currentColor;
+  text-align: left;
   font-family: var(--mono);
   pointer-events: none;
   user-select: none;

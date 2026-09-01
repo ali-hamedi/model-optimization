@@ -56,12 +56,14 @@ export default function MapNode({
       <span className="node__meta">
         {paper.authors.split(/[,&]/)[0].trim()} · {paper.year}
       </span>
-      <span className="node__role">{ROLE_LABEL[paper.roles[0]]}</span>
-      {lineage && (
-        <span className="node__lineage" aria-hidden="true">
-          {lineage === 'ancestor' ? '↑' : '↓'}
-        </span>
-      )}
+      <span className="node__role">
+        {ROLE_LABEL[paper.roles[0]]}
+        {lineage && (
+          <span className="node__lineage" aria-hidden="true">
+            {lineage === 'ancestor' ? ' ↑' : ' ↓'}
+          </span>
+        )}
+      </span>
     </button>
   );
 }

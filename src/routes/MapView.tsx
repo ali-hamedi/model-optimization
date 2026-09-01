@@ -118,6 +118,7 @@ export default function MapView() {
     : selected
       ? paperById[selected]
       : null;
+  const pinned = !hovered && Boolean(selected);
 
   return (
     <section className={`map${selected && !hovered ? ' has-selection' : ''}`}>
@@ -205,15 +206,18 @@ export default function MapView() {
             />
           ))}
 
-          {cardPaper && (
-            <MapCard
-              paper={cardPaper}
-              pinned={!hovered && Boolean(selected)}
-              lineage={lineage}
-            />
+          {cardPaper && !pinned && (
+            <MapCard paper={cardPaper} pinned={false} lineage={lineage} />
           )}
         </div>
       </div>
+
+      {/* Docked outside .map__stage: that box establishes a containing
+          block for position:fixed descendants, which would otherwise pin
+          this card to the stage's corner instead of the viewport's. */}
+      {cardPaper && pinned && (
+        <MapCard paper={cardPaper} pinned lineage={lineage} />
+      )}
 
       <div className="map__list">
         {PAPERS.map((p) => (
