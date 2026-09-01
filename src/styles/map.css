@@ -197,11 +197,13 @@
 
 .edge__label {
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
   fill: var(--ink);
   stroke: var(--paper);
-  stroke-width: 5;
+  stroke-width: 4;
+  stroke-linejoin: round;
   paint-order: stroke fill;
   pointer-events: none;
   animation: label-in 220ms var(--ease);

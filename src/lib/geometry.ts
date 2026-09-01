@@ -31,10 +31,11 @@ function quad(a: Point, c: Point, b: Point, t: number): Point {
 }
 
 /**
- * A shallow arc from the edge of one node box to the edge of the next, always
- * bowing the same way so parallel arguments stay separable.
+ * A direct, readable connection from the edge of one node box to the next.
+ * The map has no parallel edges, so bending every relation only introduces
+ * crossings and makes the argument harder to trace.
  */
-export function edgeGeometry(a: Point, b: Point, curve = 0.13): EdgeGeometry {
+export function edgeGeometry(a: Point, b: Point, curve = 0): EdgeGeometry {
   const start = boxExit(a, b);
   const end = boxExit(b, a);
   const dx = end.x - start.x;
