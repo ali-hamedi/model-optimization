@@ -388,19 +388,19 @@ $$
 
 ![[img7.png]]
 
-D:: so inputs are X and Y which are a number in \[p\] meaning they are in {0,...,p-1} then we embed them; into $R^D$ either via a learnable embedding or a one-hot embedding(D=p)
+D:: so inputs are X and Y which are a number in $[p]$, meaning they are in $\{0,\ldots,p-1\}$; then we embed them into $\mathbb{R}^D$ either via a learnable embedding or a one-hot embedding ($D=p$).
 	let's take the canonical one-hot embedding ; X and Y turn into $X_{23 * 1}$ and $Y_{23*1}$ vectors which we have then to apply to layers $\theta_{512*23}$ and $\xi_{23*512}$ ; 
 
 Then for input
 $$
-\in\mathbb R^{23},
+h_x+h_y\in\mathbb{R}^{23},
 $$
 you get all hidden preactivations via
 $$
-Θ(hx​+hy​)∈R^{512}.
+\Theta(h_x+h_y)\in\mathbb{R}^{512}.
 $$
 each row of $\theta$ namely $\theta_m$(the m'th row): contain 23 entries across row 5 form the Fourier/cosine pattern 
-	$\theta_m[j]$ is **value of the cosine wave at position j* 
+	$\theta_m[j]$ is the **value of the cosine wave at position $j$**.
 
 Example: neuron 5 learns frequency $k=3$
 Suppose
@@ -626,7 +626,8 @@ $$
 +
 
 every allowed Fourier frequency k=1,…,p−12 has at least one neuron assigned to it
-$$\boxed{\text{every allowed Fourier frequency }k=1,\dots,\frac{p-1}{2}\text{ has at least one neuron assigned to it}}
+$$
+\boxed{\text{every allowed Fourier frequency }k=1,\dots,\frac{p-1}{2}\text{ has at least one neuron assigned to it}}
 $$
 WE illustrates the uniformity of phases within a specific frequency group Nk by examining the higher-order symmetry, i.e., the symmetry of ιϕm for ι ∈ {1, 2, 3, 4}. Both the visualizations
 and the quantitative averages of sine and cosine values support the within-group uniformity claim stated in Observation 
@@ -1105,7 +1106,7 @@ f^{[m]}(x,y)[j]
 $$
 
 ![[img16.png]]
-Here, $cos(ω_k(x+y −j))$ provides the primary signal, whose value peaks exactly at $j = (x+y)$ $mod$ $p$,while the remaining terms act as residual noise whose amplitude and sign depend on the chosen <u>frequency</u> $k$, <u>phase</u> $ϕ_m$, and <u>input pair</u> $(x, y)$
+Here, $\cos(\omega_k(x+y-j))$ provides the primary signal, whose value peaks exactly at $j=(x+y)\bmod p$, while the remaining terms act as residual noise whose amplitude and sign depend on the chosen <u>frequency</u> $k$, <u>phase</u> $\phi_m$, and <u>input pair</u> $(x,y)$.
 
 
 So the structure is:
@@ -1574,5 +1575,4 @@ Early feature emergence can be analyzed through a simpler margin objective inste
 
 
 ### 6 Theoretical Extensions
-
 

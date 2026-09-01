@@ -58,7 +58,7 @@ which solutions first appear, which we call the measured intrinsic dimension of 
 - $θ(D)$ $∈$ $R^D$ be a parameter vector in a parameter space of dimension D
 - let $θ(D)$ be a randomly chosen initial parameter vector
 - let $θ(D)_∗$ be the final parameter vector arrived at via optimization
-- Denoting as s the dimensionality of the solution set\
+- Denoting as $s$ the dimensionality of the solution set
 - intrinsic dimensionality $d_{int}$ of a solution as the codimension of the solution set inside of $R^D$
 $$
 D = d_{int} + s
@@ -121,7 +121,6 @@ In the paper, the same construction is used with very large $D$ and much smaller
 	-  it allows the network to benefit from beginning in a region of parameter space designed by any number of good initialization schemes (Glorot & Bengio, 2010; He et al., 2015) to be well-conditioned, such that gradient descent via commonly used optimizers will tend to work well 
 		- GOOD INITALIZTION (KAIMING HE) & avoid weird geometry
 basically they implacity say that $θ_0(D)$ != 0 cause it would mean $θ_(D)$ = 0 and if sultion set contain origin we can do that with d=1 (FALSE)
-+
 Since $θ_0$ is sampled from a continuous initialization distribution, it will be nonzero with probability 1
 
 
@@ -225,7 +224,7 @@ Hence Li et al. want
 $$
 {\theta_0+\operatorname{Col}(P)}
 $$
-with random $θ_0$$ **and** random orientation P <span style="color:cyan;">so the sampled subspace has no privileged geometric relationship to the solution set</span>
+with random $\theta_0$ **and** random orientation $P$ <span style="color:cyan;">so the sampled subspace has no privileged geometric relationship to the solution set</span>
  
 
 Columns of P may also be orthogonalized if desired, but in our experiments we relied simply on the approximate orthogonality of high dimensional random vectors. By this construction P forms an approximately orthonormal basis for a randomly oriented d dimensional subspace of $R_D$ , with the origin of the new coordinate system at $θ_0(D)$

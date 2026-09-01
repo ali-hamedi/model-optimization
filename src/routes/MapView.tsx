@@ -134,6 +134,7 @@ export default function MapView() {
         <p className="plate__label">
           Click a paper to trace what it builds on and what came after it —
           double-click to open its reading note.
+          {view === 'graph' && ' Drag the selected paper to reposition it.'}
         </p>
         <nav className="plate__filters" aria-label="Filter by lens">
           {LENSES.map((l) => (
@@ -175,6 +176,11 @@ export default function MapView() {
             Graph
           </button>
         </div>
+        {view === 'graph' && (
+          <button type="button" className="map__reset" onClick={resetPositions}>
+            Reset layout
+          </button>
+        )}
       </div>
 
       {view === 'graph' && <div
@@ -182,7 +188,6 @@ export default function MapView() {
         onMouseLeave={() => {
           setHovered(null);
           setHoveredEdge(null);
-          resetPositions();
         }}
         role="group"
         aria-label="Paper map"

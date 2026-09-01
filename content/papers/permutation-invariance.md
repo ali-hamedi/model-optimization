@@ -1,7 +1,7 @@
 ---
 authors: Rahim Entezari, Hanie Sedghi, Olga Saukh, Behnam Neyshabur
 ---
-# The Role of Permutation Invariance inLinear Mode Connectivity of Neural Networks
+# The Role of Permutation Invariance in Linear Mode Connectivity of Neural Networks
 
 ## Related work
 
@@ -19,7 +19,7 @@ close connections to optimization and generalization"*
 ~ *"other contributing factor is the existence of scale and permutation invariances which allows the same function to be represented with many different parameter values of the same network and imposes a counter-intuitive geometry on the
 loss landscape"* :
 	1. Scale Invariance It is entirely about the **network**, not the data. It happens because of positive homogeneity in ReLU activation functions ($f(cx) = c \cdot f(x)$ for $c > 0$)
-	2. ### Permutation Invariance Think of it as physically rearranging the order of neurons. If you swap the positions of Neuron A and Neuron B in a hidden layer—moving all their respective incoming and outgoing connections with them—the network computes the exact same final result.
+	2. **Permutation Invariance.** Think of it as physically rearranging the order of neurons. If you swap the positions of Neuron A and Neuron B in a hidden layer—moving all their respective incoming and outgoing connections with them—the network computes the exact same final result.
 		e.g : 
 		Original State: 
 			Neuron A: Computes $a = \text{ReLU}(2x_1 + 3x_2)$ and connects to the output with a weight of $5$
@@ -56,7 +56,7 @@ world) with different random seed :
 
 ~ *A basin is the slope that pulls parameters down and the valley is the flat floor at the bottom, but the paper uses both interchangeably to mean the exact same low-loss region(no loss spike).* #terminology #base
 
-~ *[Şimşek et al. (2021)]([https://example.com](https://arxiv.org/abs/2105.12221)) showed that adding one extra neuron to
+~ *[Şimşek et al. (2021)](https://arxiv.org/abs/2105.12221) showed that adding one extra neuron to
 each layer is sucient to connect all these previously discrete minima into a single manifold*
 
 ~ *[Fukumizu and Amari (2000)](https://pubmed.ncbi.nlm.nih.gov/10937965/) prove that a point corresponding to the global minimum of a smaller model can be a local minimum or a saddle point of the larger mode* #niche 

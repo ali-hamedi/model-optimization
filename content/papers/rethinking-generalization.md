@@ -96,7 +96,7 @@ ror. #lens/emergance
 We complement our empirical observations with a theoretical construction showing that **large neural networks can express any labeling of the training data**.
 
 > **Key result:** A simple **two-layer ReLU network** with
-> **(p = 2n + d)** parameters can express **any labeling** of any sample of size (n) in (d) dimensions.
+> **\(p = 2n + d\)** parameters can express **any labeling** of any sample of size \(n\) in \(d\) dimensions.
 
 
 A concrete example: suppose we have **(n=1000)** training examples, each in **(d=50)** dimensions. Zhang et al. show that a two-layer ReLU network can represent **any arbitrary labeling** of these 1000 examples using only
@@ -138,7 +138,7 @@ The sentence has two pieces:
 - **fat-shattering dimension** = a capacity measure for real-valued function classes, roughly the regression analogue of VC dimension;
 - **ℓ1​-norm of the weights at each node** = for a neuron with incoming weights $w=(w_1​,…,w_m​)$,
 $$
-∥w∥1​=j=1∑m​∣wj​∣.
+\lVert w \rVert_1 = \sum_{j=1}^{m} \lvert w_j \rvert.
 $$
 So Bartlett’s result says, roughly:
 
@@ -163,7 +163,7 @@ $$
 so weight magnitude meaningfully constrains function complexity.
 
 $$
-\mathrm{ReLU}(cz)=c,\mathrm{ReLU}(z),\qquad c>0.  
+\mathrm{ReLU}(cz)=c\,\mathrm{ReLU}(z),\qquad c>0.
 $$
 
 Thus,
@@ -177,7 +177,7 @@ $$
 The **function stays identical**, while the incoming weight norm changes:
 
 $$
-|cw|_1=c|w|_1.  
+\lVert cw \rVert_1=c\lVert w \rVert_1.
 $$
 
 So a per-node ($\ell_1$)-norm is not an intrinsic measure of ReLU function complexity: the same function can be represented with very different weight magnitudes.
@@ -210,7 +210,7 @@ Experiments:
 	• Shuffled pixels:
 	• Random pixels
 	• Gaussian: A Gaussian distribution (with matching mean $\mu$ and variance $\sigma^2$ to the original image dataset) is used to generate random pixels for each image
-<span style="color:d4af3f">Surprisingly, stochastic gradient descent with unchanged hyperparameter settings can optimize the
+<span style="color:#d4af3f">Surprisingly, stochastic gradient descent with unchanged hyperparameter settings can optimize the
 weights to fit to random labels perfectly</span>
 We further break the structure of the images by shuffling
 the image pixels:
@@ -226,7 +226,7 @@ a) we do not need to change the learning rate schedule;
 b) once the fitting starts, it converges quickly;
 c) it converges to (over)fit the training set perfectl
 
-<span style="color:d4af3f;font-weight:bold">Also note that “random pixels” and “Gaussian” start converging faster than “random labels</span>
+<span style="color:#d4af3f;font-weight:bold">Also note that “random pixels” and “Gaussian” start converging faster than “random labels”</span>
 	This might be because with random pixels, the inputs are more separated from each other than natural images that originallybelong to the same category, therefore, easier to build a network for arbitrary label assignment #niche 
 
 ![[img2.png]]
@@ -302,13 +302,13 @@ $$
 Usually we do not require exact equality
 
 $$
-f_\theta(x)=g(x)\qquad \forall x,  
-]
+f_\theta(x)=g(x)\qquad \forall x,
+$$
 
 but instead ask whether
 
 $$
-\inf_{\theta\in\Theta}|f_\theta-g|<\varepsilon.  
+\inf_{\theta\in\Theta}\lVert f_\theta-g\rVert<\varepsilon.
 $$
 
 The choice of norm determines what “good approximation” means.
@@ -332,10 +332,8 @@ $$
 For a one-hidden-layer ReLU network,
 
 $$
-f(x)=
-
-c+\sum_{j=1}^{m}  
-a_j,\mathrm{ReLU}(w_jx+b_j).  
+f(x)=c+\sum_{j=1}^{m}
+a_j\,\mathrm{ReLU}(w_jx+b_j).
 $$
 
 Each ReLU introduces a possible **kink**, so (f) is a continuous piecewise-linear function.
@@ -343,11 +341,9 @@ Each ReLU introduces a possible **kink**, so (f) is a continuous piecewise-linea
 Its derivative is
 
 $$
-f'(x)
-
-\sum_j  
+f'(x)=\sum_j
 a_jw_j  
-\mathbf 1{w_jx+b_j>0}.  
+\mathbf{1}\{w_jx+b_j>0\}.
 $$
 Therefore, with width (m), the slope can change only at (O(m)) locations.
 
@@ -388,15 +384,17 @@ $$
 
 parameters can represent **any labeling of any finite sample of size (n) in (d) dimensions**. For depth k, they state:
 
-$$ width =O(n/k)​ $$
+$$
+\text{width}=O(n/k)
+$$
 
 and total weights
 $$
-O(n+d)​.
+O(n+d).
 $$
 Their corollary is essentially:
 
-$∀k≥2$,$∃$ ReLU net of depth $k$, width $O(n/k)$, and $O(n+d)$ weights
+\(\forall k\ge 2\), \(\exists\) a ReLU net of depth \(k\), width \(O(n/k)\), and \(O(n+d)\) weights.
 
 So:
 
@@ -612,10 +610,8 @@ $$
 
 the final solution must lie in the span of the training data:
 
-# $$  
-w=\sum_{i=1}^n \alpha_i x_i
-
-X^\top \alpha.  
+$$
+w=\sum_{i=1}^n \alpha_i x_i=X^\top\alpha.
 $$
 
 If SGD also perfectly fits the training labels,
@@ -673,9 +669,9 @@ why optimization is empirically easy must be different from the true cause of ge
 $$
 Xw=y
 $$
-has infinitely many solutions, then all of them have zero training error. The minimum-$\ell2$​-norm interpolant is the one solving
+has infinitely many solutions, then all of them have zero training error. The minimum-\(\ell_2\)-norm interpolant is the one solving
 $$
-w⋆=argwmin​∥w∥_2​ s.t. Xw=y
+w^\star=\underset{w}{\operatorname{arg\,min}}\ \lVert w\rVert_2
+\quad\text{subject to}\quad Xw=y.
 $$
 C:: [[Permutation Invariance in LMC]] states that that is the more generalizing circiut to generalize better (SGD normally choses the more generalizing answer)
-

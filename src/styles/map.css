@@ -77,6 +77,18 @@
 }
 .map__tabs button:first-child { border-left: 0; }
 .map__tabs button.is-active { background: var(--paper-2); color: var(--ink); }
+.map__reset {
+  appearance: none;
+  margin-left: 0.45rem;
+  padding: 0.32rem 0.7rem;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink-3);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+}
+.map__reset:hover { color: var(--ink); border-color: var(--ink-3); }
 
 .lensfilter {
   appearance: none;
@@ -470,4 +482,5 @@
 
 @media (max-width: 900px) {
   .map__tabs { margin-left: 0; }
+  .map__reset { margin-left: 0; }
 }

@@ -9,9 +9,9 @@ where the generalising solution is slower to learn but more efficient, <span sty
 ## **$C_{gen}$ (Low-Rank Projection):**
 Generalizing features ($\mathbf{h}_{gen}$) capture the true mathematical manifold (e.g., Fourier frequencies for modular addition). Because the data maps to a dense, low-dimensional subspace, the weight vector $\mathbf{w}_{gen}$ perfectly aligns with all inputs ($\cos \theta \approx 1$).
 
-$$z = \vert{}\vert{}\mathbf{w}_{gen}\vert{}\vert{} \cdot \vert{}\vert{}\mathbf{h}_{gen}\vert{}\vert{}$$
+$$z = \lVert\mathbf{w}_{\mathrm{gen}}\rVert \cdot \lVert\mathbf{h}_{\mathrm{gen}}\rVert$$
 
-A tiny parameter norm $\vert{}\vert{}\mathbf{w}_{gen}\vert{}\vert{}$ naturally yields a massive logit $z$. Efficiency remains constant regardless of dataset size.
+A tiny parameter norm $\lVert\mathbf{w}_{\mathrm{gen}}\rVert$ naturally yields a massive logit $z$. Efficiency remains constant regardless of dataset size.
 
 ## **$C_{mem}$ (High-Dimensional Interpolation):**
 
@@ -168,5 +168,4 @@ new training setting, $C_{mem}$ is now more efficient than $C_{gen}$ , and so we
 ~ Suppose we train a network on a dataset with 𝐷 ≈ $D_{crit}$. $C_{gen}$ and $C_{mem}$ would be similarly efficient, and there are two possible cases:
 	1. gradient descent would select either $C_{mem}$  or $C_{gen}$  , and then make it the maximal circuit. This could happen in a consistent manner (for example, perhaps since $C_{mem}$  is learned faster it always becomes the maximal circuit), or in a manner dependent on the random initialisation = presence or absence of grokking
 	2. In the second case, gradient descent would produce a mixture of both $C_{mem}$  and $C_{gen}$  . Since neither $C_{mem}$  nor $C_{gen}$would dominate the prediction on the test set, we would expect middling test performance =  we only get to middling generalisation unlike in typical grokking
-
 
