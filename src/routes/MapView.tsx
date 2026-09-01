@@ -130,8 +130,7 @@ export default function MapView() {
 
       <div className="plate__caption">
         <p className="plate__label">
-          Ten papers, four lenses, and the arguments between them. Click one to
-          see what it stands on and what it provoked.
+          Click a paper to trace what it builds on and what came after it.
         </p>
         <nav className="plate__filters" aria-label="Filter by lens">
           {LENSES.map((l) => (

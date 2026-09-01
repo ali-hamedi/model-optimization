@@ -1,4 +1,4 @@
-# Compression as a probe of computation
+# Compression as a Lens on Computation
 
 An interactive literature map for the trench question:
 

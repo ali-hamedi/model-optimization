@@ -1,12 +1,8 @@
 /* =====================================================================
-   Compression as a probe of computation — design system.
+   Compression as a Lens on Computation — design system.
    Two families: Source Serif 4 (reading), IBM Plex Mono (apparatus).
    One ground: paper. Colour is semantic only — it always means a lens.
 
-   Theme: the light palette is the base. Dark is applied either by the
-   system preference (unless the reader has explicitly asked for light)
-   or by data-theme, which the toggle sets and index.html restores
-   before first paint.
    ===================================================================== */
 
 :root {
@@ -33,48 +29,6 @@
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --paper: #17171a;
-    --paper-2: #1e1e21;
-    --paper-3: #26262a;
-    --ink: #ece8de;
-    --ink-2: #b6b1a4;
-    --ink-3: #868073;
-    --rule: rgba(236, 232, 222, 0.2);
-    --rule-soft: rgba(236, 232, 222, 0.09);
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 16px 34px -20px rgba(0, 0, 0, 0.9);
-    --lift: rgba(0, 0, 0, 0.75);
-
-    --lens-geometry: #74b8bf;
-    --lens-structure: #d8a25a;
-    --lens-representation: #c091b6;
-    --lens-emergence: #93addc;
-
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme='dark'] {
-  --paper: #17171a;
-  --paper-2: #1e1e21;
-  --paper-3: #26262a;
-  --ink: #ece8de;
-  --ink-2: #b6b1a4;
-  --ink-3: #868073;
-  --rule: rgba(236, 232, 222, 0.2);
-  --rule-soft: rgba(236, 232, 222, 0.09);
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 16px 34px -20px rgba(0, 0, 0, 0.9);
-  --lift: rgba(0, 0, 0, 0.75);
-
-  --lens-geometry: #74b8bf;
-  --lens-structure: #d8a25a;
-  --lens-representation: #c091b6;
-  --lens-emergence: #93addc;
-
-  color-scheme: dark;
 }
 
 *,
@@ -203,30 +157,6 @@ a:hover {
   border-bottom-color: var(--ink);
 }
 
-.theme-toggle {
-  display: grid;
-  place-items: center;
-  width: 1.9rem;
-  height: 1.9rem;
-  margin-left: 0.4rem;
-  align-self: center;
-  background: none;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  color: var(--ink-3);
-  cursor: pointer;
-  transition: color 180ms var(--ease), background 180ms var(--ease);
-}
-.theme-toggle:hover {
-  color: var(--ink);
-  background: var(--paper-2);
-}
-.theme-toggle svg {
-  width: 15px;
-  height: 15px;
-  display: block;
-}
-
 .page {
   flex: 1;
   width: 100%;
@@ -299,15 +229,10 @@ a:hover {
     padding-bottom: 0.6rem;
   }
   .topbar__nav {
-    order: 2;
     width: 100%;
     margin-left: 0;
     gap: 0.9rem;
     flex-wrap: wrap;
-  }
-  .theme-toggle {
-    order: 1;
-    margin-left: auto;
   }
   .paper__rail {
     position: static;
