@@ -5,7 +5,7 @@ import { PAPERS, paperById } from '../data/papers';
 import { neighboursOf } from '../data/relations';
 import type { LensId } from '../data/types';
 import { lineageOf } from '../lib/ancestry';
-import { MAP_H, MAP_W, lensLabelAnchor } from '../lib/layout';
+import { MAP_H, MAP_W, NODE_POS, lensLabelAnchor, type Point } from '../lib/layout';
 import MapEdges, { type EdgeState } from '../components/map/MapEdges';
 import MapNode from '../components/map/MapNode';
 import MapCard from '../components/map/MapCard';
@@ -16,6 +16,8 @@ export default function MapView() {
   const [params, setParams] = useSearchParams();
   const [hovered, setHoveredNow] = useState<string | null>(null);
   const [hoveredEdge, setHoveredEdge] = useState<string | null>(null);
+  const [view, setView] = useState<'list' | 'graph'>('list');
+  const [positions, setPositions] = useState<Record<string, Point>>(NODE_POS);
   const hoverTimer = useRef<number | undefined>(undefined);
 
   /**
@@ -114,6 +116,10 @@ export default function MapView() {
   );
 
   const cardPaper = hovered ? paperById[hovered] : null;
+  const resetPositions = useCallback(() => setPositions(NODE_POS), []);
+  const movePaper = useCallback((id: string, position: Point) => {
+    setPositions((current) => ({ ...current, [id]: position }));
+  }, []);
 
   return (
     <section className="map">
@@ -149,18 +155,40 @@ export default function MapView() {
             </button>
           )}
         </nav>
+        <div className="map__tabs" role="tablist" aria-label="Map view">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={view === 'list'}
+            className={view === 'list' ? 'is-active' : ''}
+            onClick={() => setView('list')}
+          >
+            List
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={view === 'graph'}
+            className={view === 'graph' ? 'is-active' : ''}
+            onClick={() => setView('graph')}
+          >
+            Graph
+          </button>
+        </div>
       </div>
 
-      <div
+      {view === 'graph' && <div
         className="map__stage"
         onMouseLeave={() => {
           setHovered(null);
           setHoveredEdge(null);
+          resetPositions();
         }}
         role="group"
         aria-label="Paper map"
       >
         <MapEdges
+          positions={positions}
           edgeState={edgeState}
           onHoverEdge={setHoveredEdge}
         />
@@ -196,7 +224,10 @@ export default function MapView() {
               paper={p}
               state={nodeState(p.id)}
               lineage={lineageRole(p.id)}
+              position={positions[p.id]}
+              draggable={selected === p.id}
               onHover={setHovered}
+              onMove={movePaper}
               onSelect={(id) => setParam('p', selected === id ? null : id)}
               onOpen={(id) => navigate(`/papers/${id}`)}
             />
@@ -205,14 +236,15 @@ export default function MapView() {
           {cardPaper && (
             <MapCard
               paper={cardPaper}
+              position={positions[cardPaper.id]}
               onHover={() => setHovered(cardPaper.id)}
               onLeave={() => setHovered(null)}
             />
           )}
         </div>
-      </div>
+      </div>}
 
-      <div className="map__list">
+      {view === 'list' && <div className="map__list">
         {PAPERS.map((p) => (
           <Link
             key={p.id}
@@ -226,9 +258,9 @@ export default function MapView() {
             <span className="listrow__summary">{p.summary}</span>
           </Link>
         ))}
-      </div>
+      </div>}
 
-      <Legend />
+      {view === 'graph' && <Legend />}
     </section>
   );
 }

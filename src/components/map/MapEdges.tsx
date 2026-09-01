@@ -1,24 +1,25 @@
 import { useMemo } from 'react';
 import { RELATION_LABEL } from '../../data/lenses';
 import { RELATIONS } from '../../data/relations';
-import { MAP_H, MAP_W, NODE_POS } from '../../lib/layout';
+import { MAP_H, MAP_W, type Point } from '../../lib/layout';
 import { edgeGeometry } from '../../lib/geometry';
 
 export type EdgeState = 'idle' | 'dim' | 'live' | 'lineage';
 
 interface Props {
+  positions: Record<string, Point>;
   edgeState: (source: string, target: string) => { state: EdgeState; depth: number };
   onHoverEdge: (key: string | null) => void;
 }
 
-export default function MapEdges({ edgeState, onHoverEdge }: Props) {
+export default function MapEdges({ positions, edgeState, onHoverEdge }: Props) {
   const geometry = useMemo(
     () =>
       RELATIONS.map((r) => ({
         relation: r,
-        geo: edgeGeometry(NODE_POS[r.source], NODE_POS[r.target]),
+        geo: edgeGeometry(positions[r.source], positions[r.target]),
       })),
-    [],
+    [positions],
   );
 
   return (

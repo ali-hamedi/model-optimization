@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Paper } from '../../data/types';
 import { lensById, ROLE_LABEL } from '../../data/lenses';
-import { NODE_POS, MAP_W, MAP_H } from '../../lib/layout';
+import { MAP_W, MAP_H, type Point } from '../../lib/layout';
 
 /**
  * An annotation, not a tooltip bubble — but it only ever shows on hover.
@@ -10,14 +10,15 @@ import { NODE_POS, MAP_W, MAP_H } from '../../lib/layout';
  */
 export default function MapCard({
   paper,
+  position: pos,
   onHover,
   onLeave,
 }: {
   paper: Paper;
+  position: Point;
   onHover?: () => void;
   onLeave?: () => void;
 }) {
-  const pos = NODE_POS[paper.id];
   const x = (pos.x / MAP_W) * 100;
   const y = (pos.y / MAP_H) * 100;
 
