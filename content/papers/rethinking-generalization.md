@@ -170,6 +170,7 @@ Thus,
 
 $$
 v' \mathrm{ReLU}(w^\top x) = 
+
 \frac{v}{c} \mathrm{ReLU}(cw^\top x).  
 $$
 
@@ -302,7 +303,7 @@ Usually we do not require exact equality
 
 $$
 f_\theta(x)=g(x)\qquad \forall x,  
-$$
+]
 
 but instead ask whether
 
@@ -332,6 +333,7 @@ For a one-hidden-layer ReLU network,
 
 $$
 f(x)=
+
 c+\sum_{j=1}^{m}  
 a_j,\mathrm{ReLU}(w_jx+b_j).  
 $$
@@ -342,6 +344,7 @@ Its derivative is
 
 $$
 f'(x)
+
 \sum_j  
 a_jw_j  
 \mathbf 1{w_jx+b_j>0}.  
@@ -609,8 +612,9 @@ $$
 
 the final solution must lie in the span of the training data:
 
-$$  
+# $$  
 w=\sum_{i=1}^n \alpha_i x_i
+
 X^\top \alpha.  
 $$
 
@@ -669,7 +673,7 @@ why optimization is empirically easy must be different from the true cause of ge
 $$
 Xw=y
 $$
-has infinitely many solutions, then all of them have zero training error. The minimum-$\ell_2$​-norm interpolant is the one solving
+has infinitely many solutions, then all of them have zero training error. The minimum-$\ell2$​-norm interpolant is the one solving
 $$
 w⋆=argwmin​∥w∥_2​ s.t. Xw=y
 $$

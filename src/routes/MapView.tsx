@@ -113,15 +113,10 @@ export default function MapView() {
     [hovered, hoveredEdge, lineage, inLens],
   );
 
-  const cardPaper = hovered
-    ? paperById[hovered]
-    : selected
-      ? paperById[selected]
-      : null;
-  const pinned = !hovered && Boolean(selected);
+  const cardPaper = hovered ? paperById[hovered] : null;
 
   return (
-    <section className={`map${selected && !hovered ? ' has-selection' : ''}`}>
+    <section className="map">
       <header className="masthead">
         <h1 className="masthead__title">
           How does an overparameterized neural network discover and represent
@@ -207,18 +202,15 @@ export default function MapView() {
             />
           ))}
 
-          {cardPaper && !pinned && (
-            <MapCard paper={cardPaper} pinned={false} lineage={lineage} />
+          {cardPaper && (
+            <MapCard
+              paper={cardPaper}
+              onHover={() => setHovered(cardPaper.id)}
+              onLeave={() => setHovered(null)}
+            />
           )}
         </div>
       </div>
-
-      {/* Docked outside .map__stage: that box establishes a containing
-          block for position:fixed descendants, which would otherwise pin
-          this card to the stage's corner instead of the viewport's. */}
-      {cardPaper && pinned && (
-        <MapCard paper={cardPaper} pinned lineage={lineage} />
-      )}
 
       <div className="map__list">
         {PAPERS.map((p) => (

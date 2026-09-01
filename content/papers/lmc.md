@@ -1,7 +1,6 @@
 ---
 authors: Jonathan Frankle, Gintare Karolina Dziugaite, Daniel M. Roy, Michael Carbin
 ---
-![[Pasted image 20260831090310.png]]
 # Linear Mode Connectivity and the Lottery Ticket Hypothesis
 
 ICML 2020 · arXiv 1912.05671 · Tier 2 read · session ~2026-06-07
