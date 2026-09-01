@@ -43,6 +43,8 @@ export interface Paper {
   note: string;
   /** True when the reading note is still a stub. */
   provisional?: boolean;
+  /** True when the public note intentionally contains only "Empty". */
+  empty?: boolean;
 }
 
 export type RelationType =

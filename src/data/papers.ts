@@ -21,6 +21,7 @@ export const PAPERS: Paper[] = [
     trenchRelation:
       'The first paper of the trench: it makes "where is the computation?" an empirical question, and smuggles in a geometry claim it never says out loud.',
     note: 'lth',
+    empty: true,
   },
   {
     id: 'lmc',
@@ -37,6 +38,7 @@ export const PAPERS: Paper[] = [
     trenchRelation:
       'Turns the ticket story into a landscape story: the question moves from where the ticket is to when the trajectory settles.',
     note: 'lmc',
+    empty: true,
   },
   {
     id: 'permutation-invariance',
@@ -69,6 +71,7 @@ export const PAPERS: Paper[] = [
     trenchRelation:
       'Removes the assumption every structure-lens result quietly relies on: that what a parameter weighs tells you what it does.',
     note: 'superposition',
+    empty: true,
     provisional: true,
   },
   {
@@ -101,6 +104,7 @@ export const PAPERS: Paper[] = [
     trenchRelation:
       'Changed the holiness of LTH. If a random ticket wins, the specialness was never in the individual weights.',
     note: 'random-tickets',
+    empty: true,
   },
   {
     id: 'rewinding-vs-finetuning',

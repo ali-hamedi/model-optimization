@@ -47,6 +47,7 @@ export default function MapCard({
         {paper.venue ? ` · ${paper.venue}` : ''}
       </div>
       <p className="card__summary">{paper.summary}</p>
+      {paper.empty && <span className="card__empty">Empty</span>}
       <Link className="card__open" to={`/papers/${paper.id}`}>
         Open reading note →
       </Link>

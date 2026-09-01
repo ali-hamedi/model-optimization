@@ -132,6 +132,10 @@
 .lensfilter--clear:hover {
   opacity: 1;
 }
+.lensfilter--clear:disabled {
+  cursor: default;
+  opacity: 0.28;
+}
 
 /* ---- stage ----------------------------------------------------------- */
 
@@ -408,6 +412,17 @@
   line-height: 1.55;
   color: var(--ink-2);
 }
+.card__empty,
+.listrow__empty {
+  display: inline-block;
+  margin-top: 0.7rem;
+  padding: 0.08rem 0.35rem;
+  border: 1px solid color-mix(in srgb, currentColor 40%, var(--rule));
+  color: currentColor;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+}
 .card__open {
   display: inline-block;
   margin-top: 0.85rem;
@@ -470,14 +485,15 @@
 }
 .listrow {
   display: block;
-  background: var(--paper);
+  background: color-mix(in srgb, currentColor 6%, var(--paper));
   padding: 0.9rem 1rem;
   text-decoration: none;
   border-left: 2px solid currentColor;
 }
-.listrow__title { display: block; color: var(--ink); font-size: 1rem; line-height: 1.3; }
+.listrow__title { display: block; color: currentColor; font-size: 1rem; line-height: 1.3; }
 .listrow__meta { display: block; margin-top: 0.25rem; font-family: var(--mono); font-size: 0.66rem; color: var(--ink-3); }
 .listrow__summary { display: block; margin-top: 0.4rem; font-size: 0.86rem; color: var(--ink-2); }
+.listrow:hover { background: color-mix(in srgb, currentColor 12%, var(--paper)); }
 .listrow.is-dim { display: none; }
 
 @media (max-width: 900px) {

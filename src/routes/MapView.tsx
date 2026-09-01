@@ -150,11 +150,14 @@ export default function MapView() {
               {l.title.replace(/^Optimization /, '').replace(/ & Circuits| & Emergence/, '')}
             </button>
           ))}
-          {lens && (
-            <button type="button" className="lensfilter lensfilter--clear" onClick={() => setParam('lens', null)}>
-              clear
-            </button>
-          )}
+          <button
+            type="button"
+            className="lensfilter lensfilter--clear"
+            onClick={() => setParam('lens', null)}
+            disabled={!lens}
+          >
+            clear filter
+          </button>
         </nav>
         <div className="map__tabs" role="tablist" aria-label="Map view">
           <button
@@ -261,6 +264,7 @@ export default function MapView() {
               {p.authors} · {p.year} · {ROLE_LABEL[p.roles[0]]}
             </span>
             <span className="listrow__summary">{p.summary}</span>
+            {p.empty && <span className="listrow__empty">Empty</span>}
           </Link>
         ))}
       </div>}
