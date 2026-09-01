@@ -106,15 +106,21 @@
 .map__stage {
   position: relative;
   width: 100%;
-  /* fills what the header leaves of the first screen, and never more */
+  /*
+   * This is a plotted coordinate space, rather than a compact dashboard.
+   * On wide, shallow viewports flex used to squeeze all 780 map units into
+   * the height left by the browser window, making the lower papers, lens
+   * labels, and the folded line key feel stacked on one another.
+   */
   flex: 1 1 auto;
-  min-height: 420px;
+  min-height: clamp(34rem, 43vw, 48rem);
   /* clears room for the bottom-row lens labels, which are tall enough
      (padding + border) to spill past the stage box otherwise, plus real
      breathing room before the legend/footer below */
   padding-bottom: 6.5rem;
   container-type: size;
   margin-top: 0.4rem;
+  margin-bottom: clamp(1.75rem, 3vw, 3.5rem);
 }
 
 .map__edges {
@@ -302,7 +308,22 @@
 .card {
   position: absolute;
   z-index: 20;
+  /* Prefer the right of the node.  clamp keeps the whole card inside the
+     stage at either edge instead of letting a heuristic throw it to the left
+     or leaving part of it beyond the map. */
+  left: clamp(
+    0.75rem,
+    calc(var(--card-x) + 6.5rem),
+    calc(100% - min(20.5rem, 70cqw) - 0.75rem)
+  );
+  top: clamp(
+    0.75rem,
+    calc(var(--card-y) - 4rem),
+    calc(100% - min(20rem, calc(100% - 1.5rem)) - 0.75rem)
+  );
   width: min(20.5rem, 70cqw);
+  max-height: min(20rem, calc(100% - 1.5rem));
+  overflow-y: auto;
   padding: 0.85rem 1rem 1rem 1.1rem;
   background: color-mix(in srgb, currentColor 6%, var(--paper));
   border: 1px solid color-mix(in srgb, currentColor 28%, var(--rule));
@@ -363,8 +384,8 @@
 /* ---- legend / footer of the map -------------------------------------- */
 
 .map__foot {
-  margin-top: auto;
-  padding-top: 1.4rem;
+  margin-top: 0;
+  padding-top: 1.65rem;
   border-top: 1px solid var(--rule);
   font-family: var(--mono);
   font-size: 0.7rem;

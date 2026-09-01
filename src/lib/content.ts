@@ -83,12 +83,27 @@ function resolve(target: string): string | null {
 
 const cache = new Map<string, RenderedNote>();
 
+// These entries are intentionally present on the map, but their reading notes
+// are not published yet. Keep the source material for LTH and LMC in place
+// while making the public page unambiguously empty.
+const EMPTY_PAPER_NOTES = new Set(['lth', 'lmc', 'superposition']);
+
+function isTitleOnly(raw: string): boolean {
+  const body = raw.replace(/^---[\s\S]*?---\s*/, '').trim();
+  return /^#\s+.+$/.test(body);
+}
+
+function publishedRaw(slug: string, raw: string): string {
+  if (EMPTY_PAPER_NOTES.has(slug) || isTitleOnly(raw)) return 'Empty';
+  return raw;
+}
+
 export function getNote(slug: string): RenderedNote | null {
   const file = noteBySlug[slug];
   if (!file || !file.raw.trim()) return null;
   const hit = cache.get(slug);
   if (hit) return hit;
-  const rendered = renderNote(file.raw, { base: BASE, resolve });
+  const rendered = renderNote(publishedRaw(slug, file.raw), { base: BASE, resolve });
   cache.set(slug, rendered);
   return rendered;
 }

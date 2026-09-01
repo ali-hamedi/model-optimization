@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Paper } from '../../data/types';
 import { lensById, ROLE_LABEL } from '../../data/lenses';
-import { neighboursOf } from '../../data/relations';
 import { NODE_POS, MAP_W, MAP_H } from '../../lib/layout';
 
 /**
@@ -19,33 +18,16 @@ export default function MapCard({
   onLeave?: () => void;
 }) {
   const pos = NODE_POS[paper.id];
-
-  // Put the card on whichever side hides the least: the annotation must never
-  // cover the neighbours whose edges it is explaining.
-  const NEED = 380;
-  const neighbours = [...neighboursOf(paper.id)].map((id) => NODE_POS[id]);
-  const cost = (side: 'left' | 'right') => {
-    const blocked = neighbours.filter((n) =>
-      side === 'left' ? n.x < pos.x : n.x > pos.x,
-    ).length;
-    const room = side === 'left' ? pos.x : MAP_W - pos.x;
-    return blocked * 220 + Math.max(0, NEED - room);
-  };
-  const onLeft = cost('left') <= cost('right');
-
-  // sit beside the node, roughly level with it, and never off the plate
-  const top = Math.min(64, Math.max(2, (pos.y / MAP_H) * 100 - 13));
+  const x = (pos.x / MAP_W) * 100;
+  const y = (pos.y / MAP_H) * 100;
 
   return (
     <div
       className={`card lens--${paper.primaryLens}`}
       style={{
-        left: onLeft ? undefined : `${(pos.x / MAP_W) * 100}%`,
-        right: onLeft ? `${100 - (pos.x / MAP_W) * 100}%` : undefined,
-        top: `${top}%`,
-        marginLeft: onLeft ? undefined : '6.5rem',
-        marginRight: onLeft ? '6.5rem' : undefined,
-      }}
+        '--card-x': `${x}%`,
+        '--card-y': `${y}%`,
+      } as React.CSSProperties}
       role="tooltip"
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
