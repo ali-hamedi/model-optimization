@@ -153,11 +153,11 @@
   transition: opacity 260ms var(--ease), stroke-width 260ms var(--ease),
     stroke 260ms var(--ease);
 }
-.edge--foundation { stroke-width: 1.6; opacity: 0.42; }
-.edge--refinement { stroke-width: 1.1; opacity: 0.36; }
-.edge--support { stroke-width: 1; opacity: 0.26; stroke-dasharray: 1 4; }
-.edge--bridge { stroke-width: 1.1; opacity: 0.3; stroke-dasharray: 7 6; }
-.edge--counter { stroke-width: 1.3; opacity: 0.42; stroke-dasharray: 10 5 2 5; }
+.edge--foundation { stroke-width: 1.3; opacity: 0.34; }
+.edge--refinement { stroke-width: 1; opacity: 0.26; }
+.edge--support { stroke-width: 1; opacity: 0.2; stroke-dasharray: 1 4; }
+.edge--bridge { stroke-width: 1; opacity: 0.22; stroke-dasharray: 5 5; }
+.edge--counter { stroke-width: 1.1; opacity: 0.3; stroke-dasharray: 5 5; }
 
 .edge.is-dim { opacity: 0.07; }
 .edge.is-live { opacity: 0.95; stroke: var(--ink); stroke-width: 1.9; }
@@ -214,22 +214,23 @@
   width: 13.8cqw;
   min-width: 112px;
   max-width: 210px;
-  padding: 0.75cqw 0.85cqw 0.7cqw;
+  padding: 0.5cqw 0.6cqw 0.5cqw 0.85cqw;
   background: var(--paper);
-  border: 1px solid var(--rule);
+  border: none;
   border-left: 2px solid currentColor;
+  border-bottom: 1px solid var(--rule);
   border-radius: 0;
   text-align: left;
   font-family: var(--mono);
   cursor: pointer;
   transition: opacity 220ms var(--ease), border-color 180ms var(--ease),
-    box-shadow 200ms var(--ease);
+    background 180ms var(--ease);
 }
 
 .node:hover,
 .node:focus-visible {
   border-color: var(--ink);
-  box-shadow: 0 10px 22px -18px var(--lift);
+  background: var(--paper-2);
 }
 
 .node.is-dim {
@@ -237,7 +238,7 @@
 }
 .node.is-selected {
   border-color: var(--ink);
-  box-shadow: inset 0 0 0 1px var(--rule);
+  background: var(--paper-2);
 }
 .node.is-neighbour {
   border-color: color-mix(in srgb, currentColor 60%, var(--rule));
@@ -288,12 +289,12 @@
   position: absolute;
   z-index: 20;
   width: min(20.5rem, 70cqw);
-  padding: 0.9rem 1rem 1rem;
+  padding: 0.85rem 1rem 1rem 1.1rem;
   background: var(--paper);
-  border: 1px solid var(--ink-3);
-  border-top: 2px solid currentColor;
+  border: 1px solid var(--rule);
+  border-left: 2px solid currentColor;
   border-radius: 0;
-  box-shadow: 0 18px 40px -30px var(--lift);
+  box-shadow: 0 12px 26px -22px var(--lift);
   animation: card-in 200ms var(--ease);
   pointer-events: none;
 }

@@ -3,7 +3,7 @@ import { PAPERS } from '../data/papers';
 import { RELATIONS } from '../data/relations';
 
 export const MAP_W = 1200;
-export const MAP_H = 620;
+export const MAP_H = 780;
 
 export interface Point {
   x: number;
@@ -55,8 +55,8 @@ function solve(): Record<string, Point> {
     };
   }
 
-  const SEP_X = 236;
-  const SEP_Y = 122;
+  const SEP_X = 264;
+  const SEP_Y = 168;
   // The four corners are reserved for the lens titles; papers are kept out.
   const CORNERS: Point[] = [
     { x: 90, y: 40 },
@@ -65,7 +65,7 @@ function solve(): Record<string, Point> {
     { x: MAP_W - 90, y: MAP_H - 40 },
   ];
   const CORNER_X = 246;
-  const CORNER_Y = 126;
+  const CORNER_Y = 150;
 
   const clearCorners = () => {
     for (const id of ids) {
@@ -162,7 +162,7 @@ function solve(): Record<string, Point> {
 
   // Keep everything inside the frame with room for the node label boxes.
   const padX = 106;
-  const padY = 72;
+  const padY = 96;
   for (const id of ids) {
     pos[id].x = Math.min(MAP_W - padX, Math.max(padX, Math.round(pos[id].x)));
     pos[id].y = Math.min(MAP_H - padY, Math.max(padY, Math.round(pos[id].y)));

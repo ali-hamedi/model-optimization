@@ -1,13 +1,6 @@
 import { useEffect, type ReactNode } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
-const NAV = [
-  { to: '/', label: 'Map', end: true },
-  { to: '/trench', label: 'Trench' },
-  { to: '/synthesis', label: 'Synthesis' },
-  { to: '/history', label: 'World model' },
-];
-
 export default function Chrome({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
 
@@ -24,13 +17,6 @@ export default function Chrome({ children }: { children: ReactNode }) {
         <NavLink to="/" className="topbar__mark">
           Compression as a Lens <span>/ Ali Hamedi</span>
         </NavLink>
-        <nav className="topbar__nav" aria-label="Sections">
-          {NAV.map((n) => (
-            <NavLink key={n.to} to={n.to} end={n.end} className="navlink">
-              {n.label}
-            </NavLink>
-          ))}
-        </nav>
       </header>
       <main className="page" id="main">
         {children}
